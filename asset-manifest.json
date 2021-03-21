@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/skanskaspel.github.io/static/css/main.353f7d77.chunk.css",
+    "main.js": "/skanskaspel.github.io/static/js/main.0fc816ce.chunk.js",
+    "main.js.map": "/skanskaspel.github.io/static/js/main.0fc816ce.chunk.js.map",
+    "runtime-main.js": "/skanskaspel.github.io/static/js/runtime-main.01512609.js",
+    "runtime-main.js.map": "/skanskaspel.github.io/static/js/runtime-main.01512609.js.map",
+    "static/js/2.ba0c7234.chunk.js": "/skanskaspel.github.io/static/js/2.ba0c7234.chunk.js",
+    "static/js/2.ba0c7234.chunk.js.map": "/skanskaspel.github.io/static/js/2.ba0c7234.chunk.js.map",
+    "static/js/3.7344a003.chunk.js": "/skanskaspel.github.io/static/js/3.7344a003.chunk.js",
+    "static/js/3.7344a003.chunk.js.map": "/skanskaspel.github.io/static/js/3.7344a003.chunk.js.map",
+    "index.html": "/skanskaspel.github.io/index.html",
+    "static/css/main.353f7d77.chunk.css.map": "/skanskaspel.github.io/static/css/main.353f7d77.chunk.css.map",
+    "static/js/2.ba0c7234.chunk.js.LICENSE.txt": "/skanskaspel.github.io/static/js/2.ba0c7234.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.01512609.js",
+    "static/js/2.ba0c7234.chunk.js",
+    "static/css/main.353f7d77.chunk.css",
+    "static/js/main.0fc816ce.chunk.js"
+  ]
+}
