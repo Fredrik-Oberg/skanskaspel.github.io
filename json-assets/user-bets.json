@@ -1,0 +1,84 @@
+{
+  "result": [
+    {
+      "homeTeam": "Turkey",
+      "awayTeam": "Italy",
+      "kickoff": 1623438000000,
+      "usersBet": [
+        { "name": "Fredrik Öberg", "homeResult": 0, "awayResult": 0 }
+      ]
+    },
+    {
+      "homeTeam": "Wales",
+      "awayTeam": "Switzerland",
+      "kickoff": 1623502800000,
+      "usersBet": [
+        { "name": "Fredrik Öberg", "homeResult": 0, "awayResult": 0 }
+      ]
+    },
+    {
+      "homeTeam": "Denmark",
+      "awayTeam": "Finland",
+      "kickoff": 1623513600000,
+      "usersBet": [
+        { "name": "Fredrik Öberg", "homeResult": 0, "awayResult": 0 }
+      ]
+    },
+    {
+      "homeTeam": "Belgium",
+      "awayTeam": "Russia",
+      "kickoff": 1623524400000,
+      "usersBet": [
+        { "name": "Fredrik Öberg", "homeResult": 0, "awayResult": 0 }
+      ]
+    },
+    {
+      "homeTeam": "England",
+      "awayTeam": "Croatia",
+      "kickoff": 1623589200000,
+      "usersBet": [
+        { "name": "Fredrik Öberg", "homeResult": 0, "awayResult": 0 }
+      ]
+    },
+    {
+      "homeTeam": "Austria",
+      "awayTeam": "FYR Macedonia",
+      "kickoff": 1623600000000,
+      "usersBet": [
+        { "name": "Fredrik Öberg", "homeResult": 0, "awayResult": 0 }
+      ]
+    },
+    {
+      "homeTeam": "Netherlands",
+      "awayTeam": "Ukraine",
+      "kickoff": 1623610800000,
+      "usersBet": [
+        { "name": "Fredrik Öberg", "homeResult": 0, "awayResult": 0 }
+      ]
+    },
+    {
+      "homeTeam": "Scotland",
+      "awayTeam": "Czech Republic",
+      "kickoff": 1623675600000,
+      "usersBet": [
+        { "name": "Fredrik Öberg", "homeResult": 0, "awayResult": 0 }
+      ]
+    },
+    {
+      "homeTeam": "Poland",
+      "awayTeam": "Slovakia",
+      "kickoff": 1623686400000,
+      "usersBet": [
+        { "name": "Fredrik Öberg", "homeResult": 0, "awayResult": 0 }
+      ]
+    },
+    {
+      "homeTeam": "Spain",
+      "awayTeam": "Sweden",
+      "kickoff": 1623697200000,
+      "usersBet": [
+        { "name": "Fredrik Öberg", "homeResult": 0, "awayResult": 0 }
+      ]
+    }
+  ]
+}
