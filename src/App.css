@@ -1,0 +1,59 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.Bet-container table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.Bet-container table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+.Bet-container table th,
+.Bet-container table td {
+  padding: 12px 15px;
+}
+
+.Bet-container table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.Bet-container table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.Bet-container table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+.Bet-container table tbody .Bet-table-result {
+  border: 1px solid black;
+  border-top-width: 0px;
+  border-bottom-width: 0px;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
