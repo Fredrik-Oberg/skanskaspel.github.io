@@ -58,6 +58,16 @@ function Home({ firebase }) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
       <AppBar position="static">
@@ -65,19 +75,20 @@ function Home({ firebase }) {
           value={value}
           onChange={handleChange}
           aria-label="tabs panel"
-          style={{ backgroundColor: "#e23d28" }}
+          // style={{ backgroundColor: "#F4A261" }}
           variant="scrollable"
           scrollButtons="on"
           TabIndicatorProps={{ style: { background: "#f7dd16" } }}
         >
-          <Tab label="Spel" {...a11yProps(0)} />
-          <Tab label="Pågående" {...a11yProps(1)} />
-          <Tab label="Ställning" {...a11yProps(2)} />
+          <Tab label="Tippa" {...a11yProps(0)} />
+          <Tab label="Pågående matcher" {...a11yProps(1)} />
+          <Tab label="Poäng" {...a11yProps(2)} />
           <Tab label="Regler" {...a11yProps(3)} />
           <Tab label="Mina inställningar" {...a11yProps(4)} />
           {isAdmin && <Tab label="Admin" {...a11yProps(5)} />}
         </Tabs>
       </AppBar>
+
       <TabPanel value={value} index={0}>
         <Grid container direction="column" justify="center" alignItems="center">
           <Bets firebase={firebase} />

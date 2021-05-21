@@ -61,8 +61,24 @@ function UserProfile({ firebase }) {
       });
   };
   return (
-    <Grid item>
-      {/* <FormControl>
+    <>
+      <Grid item>
+      <h3>{firebase.auth.currentUser.displayName}</h3>
+      </Grid >
+      <Grid item>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ marginBottom: "30px" }}
+          onClick={() =>
+            firebase.auth.signOut().then(() => (document.location.href = "/"))
+          }
+        >
+          {"Logga ut"}
+        </Button>
+      </Grid>
+      <Grid item>
+        {/* <FormControl>
         <TextField
           id="outlined-basic-display-name"
           label={"Namn"}
@@ -71,51 +87,52 @@ function UserProfile({ firebase }) {
           onChange={(event) => setDisplayName(event.target.value)}
         />
       </FormControl> */}
-      <FormControl variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-password">
-          Nytt Lösenord
-        </InputLabel>
-        <OutlinedInput
-          id="outlined-adornment-password"
-          type={showPassword ? "text" : "password"}
-          value={password}
-          onChange={(event) => {
-            setPassword(event.target.value);
-            setPasswordError(false);
-          }}
-          error={passwordError}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={() => setShowPassword(!showPassword)}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-          labelWidth={100}
-        />
-        {passwordError && (
-          <FormHelperText id="outlined-password-helper-text">
-            Lösenordet bör innehålla minst sex tecken
-          </FormHelperText>
-        )}
-        <Button
-          type={"submit"}
-          variant="contained"
-          color="primary"
-          size="large"
-          style={{ marginTop: "15px" }}
-          startIcon={<SaveIcon />}
-          onClick={updateUserInfo}
-        >
-          Uppdatera lösenord
-        </Button>
-      </FormControl>
-    </Grid>
+        <FormControl variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">
+            Nytt Lösenord
+          </InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+              setPasswordError(false);
+            }}
+            error={passwordError}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setShowPassword(!showPassword)}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+            labelWidth={100}
+          />
+          {passwordError && (
+            <FormHelperText id="outlined-password-helper-text">
+              Lösenordet bör innehålla minst sex tecken
+            </FormHelperText>
+          )}
+          <Button
+            type={"submit"}
+            variant="contained"
+            color="primary"
+            size="large"
+            style={{ marginTop: "15px" }}
+            startIcon={<SaveIcon />}
+            onClick={updateUserInfo}
+          >
+            Uppdatera lösenord
+          </Button>
+        </FormControl>
+      </Grid>
+    </>
   );
 }
 export default UserProfile;

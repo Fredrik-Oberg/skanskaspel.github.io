@@ -24,7 +24,7 @@ const ResultInput = ({ onChangeResult, initialValue, disabled, teamName }) => {
       id="outlined-basic"
       label={seName}
       variant="outlined"
-      value={value}
+      value={value != null ? value : 0}
       disabled={disabled}
       type="number"
       min={0}

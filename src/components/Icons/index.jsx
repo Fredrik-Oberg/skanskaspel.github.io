@@ -52,11 +52,17 @@ const countryFlags = {
 };
 const FlagIcon = ({ country }) => {
   const Country = countryFlags[country];
+  const showBorder = ["Russia", "Poland", "Czech_Republic"].includes(country);
   return (
     <img
       src={Country}
       alt={`${country}`}
-      style={{ height: "25px", paddingTop: "2px", maxWidth: "40px" }}
+      style={{
+        height: "25px",
+        paddingTop: "2px",
+        maxWidth: "40px",
+        // ...(showBorder ? { border: "1px solid #80808036" } : {}),
+      }}
     />
   );
 };

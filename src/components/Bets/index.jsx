@@ -1,57 +1,97 @@
 import React from "react";
 import moment from "moment";
 
-import { Button, Grid } from "@material-ui/core";
+import { Fab, Grid, Typography } from "@material-ui/core";
 import { useSnackbar } from "material-ui-snackbar-provider";
 
 import BetCard from "./bet-card";
 import Loader from "../Loader";
 
+const extendBetResult = (res) =>
+  res.data
+    .map((bet) => {
+      // Add isFinished and hasResult
+      const kickoff = moment(bet.kickoff);
+      const isFinished = moment().add("3", "hours").isAfter(kickoff);
+      const hasResult = bet.home.result != null && bet.away.result != null;
+      return { ...bet, isFinished, hasResult };
+    })
+    // Sort on kickoff then on is finished
+    .sort((a, b) => moment.utc(a.kickoff).diff(moment.utc(b.kickoff)))
+    .sort((a, b) =>
+      b.isFinished === a.isFinished ? 0 : b.isFinished ? -1 : 1
+    );
+
 function Bets({ firebase }) {
   const [bets, setBets] = React.useState(null);
+  const [originalBets, setOriginalBets] = React.useState(null);
   const snackbar = useSnackbar();
 
   React.useEffect(() => {
     async function getBets() {
       const get = firebase.functions.httpsCallable("bets");
       const res = await get();
-      const data = res.data.map((x) => {
-        const kickoff = moment(x.kickoff);
-        const isFinished = moment().add("3", "hours").isAfter(kickoff);
-        return { ...x, isFinished };
-      });
-      const sortedData = data
-        .sort((a, b) => moment.utc(a.kickoff).diff(moment.utc(b.kickoff)))
-        .sort((a, b) =>
-          b.isFinished === a.isFinished ? 0 : b.isFinished ? -1 : 1
-        );
-      setBets(sortedData);
+      const data = extendBetResult(res);
+      setBets(data);
+      setOriginalBets(JSON.parse(JSON.stringify(data)));
     }
     getBets();
   }, [firebase.functions]);
+
   const saveBets = () => {
     console.log(bets);
-    bets.forEach((x) => {
+    const isPristine = (bet) => {
+      const originalBet = originalBets.find(
+        (x) =>
+          x.away.team === bet.away.team &&
+          x.home.team === bet.home.team &&
+          x.group === bet.group &&
+          x.stage === bet.stage
+      );
+      return (
+        bet.home.result == originalBet.home.result &&
+        bet.away.result == originalBet.away.result
+      );
+    };
+    // If one result is set other is null then we set 0
+    const changedBets = bets
+      .map((x) => {
+        if (x.home.result != null && x.away.result == null) {
+          return { ...x, away: { ...x.away, result: 0 } };
+        }
+        if (x.home.result == null && x.away.result != null) {
+          return { ...x, home: { ...x.home, result: 0 } };
+        }
+        return x;
+      })
+      .filter(
+        (x) => x.home.result != null && x.away.result != null && !isPristine(x)
+      );
+    changedBets.forEach((x) => {
       if (x.home.result < 0 || x.away.result < 0) {
         return alert("Negativt resultat i match");
       }
     });
-    // todo check for error
+    if (changedBets.length == 0) {
+      return;
+    }
+    // TODO check for error
     const saveBets = firebase.functions.httpsCallable("saveBets");
-    saveBets({ bets: bets })
-      .then((result) => {
-        console.log(result);
-        setBets(result.data);
+    saveBets({ bets: changedBets })
+      .then((res) => {
+        console.log(res);
+        const data = extendBetResult(res);
+        setBets(data);
         snackbar.showMessage("Spel sparat");
       })
       .catch((error) => {
         console.error("onRejected function called: " + error.message);
+        //TODO should be error color
         snackbar.showMessage("Misslyckades med att spara");
       });
   };
   const handleOnChange = (val) => {
     let bet = bets.find((x) => val === x);
-    // eslint-disable-next-line no-unused-vars
     bet = val;
     setBets(bets);
   };
@@ -63,25 +103,37 @@ function Bets({ firebase }) {
         <Grid
           container
           direction="column"
-          justify="space-between"
+          justify="space-evenly"
           alignItems="center"
         >
           {bets.length ? (
             <>
-              <Grid item style={{ marginBottom: "15px" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => saveBets()}
-                >
-                  Spara
-                </Button>
+              <Fab
+                style={{
+                  margin: 0,
+                  top: "auto",
+                  right: 20,
+                  bottom: 20,
+                  left: "auto",
+                  position: "fixed",
+                }}
+                variant="contained"
+                color="primary"
+                onClick={() => saveBets()}
+              >
+                Spara
+              </Fab>
+              <Grid item xs={12}>
+                <Typography variant={"h4"} style={{ marginBottom: "15px" }}>
+                  Tippa
+                </Typography>
               </Grid>
 
               {bets.map((bet, i) => {
                 return (
-                  <Grid item>
+                  <Grid>
                     <BetCard
+                      disableIfStarted
                       bet={bet}
                       key={bet.kickoff + i}
                       onChange={handleOnChange}

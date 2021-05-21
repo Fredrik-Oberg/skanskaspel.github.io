@@ -5,11 +5,13 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   Divider,
+  Box,
   Grid,
   makeStyles,
   Typography,
+  Chip,
+  CardHeader,
 } from "@material-ui/core";
 import ResultInput from "./result-input";
 
@@ -30,38 +32,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function BetCard({ bet, onChange }) {
+function BetCard({ bet, onChange, disableIfStarted }) {
   const kickoff = moment(bet.kickoff);
   const started = moment().isAfter(kickoff);
   const classes = useStyles();
-
+  const disabled = started && disableIfStarted;
   return (
     <Card
       variant="outlined"
       style={{
         marginBottom: "15px",
         backgroundColor: bet.isFinished ? "#b9b9b9" : "initial",
-        width: "100%",
+        width: "373px",
       }}
     >
-      {/* <CardHeader
-        disableTypography
-        title={
-          <>
-            <Typography variant="body1" component="span">
-              <span>{kickoff.format("dddd MM/DD")}</span>
-            </Typography>
-            <Typography
-              color="textSecondary"
-              variant={"alignRight"}
-              alignSelf="flex-end"
-            >
-              <span>{bet.group.replace("Group", "Grupp")}</span>
-            </Typography>
-          </>
-        }
-      >
-        </CardHeader> */}
+      <CardContent spacing={4}>
+        {!bet.hasResult && (
+          <Box width={"100%"} textAlign="center">
+            <Chip label="Tips saknas" color="primary" />
+          </Box>
+        )}
+      </CardContent>
       <CardContent className={classes.cardContentRoot}>
         <Grid
           container
@@ -76,47 +67,51 @@ function BetCard({ bet, onChange }) {
           </Grid>
           <Grid item>
             <Typography color="textSecondary" display={"inline"}>
-              <span>{bet.group.replace("Group", "Grupp")}</span>
+              {bet.group ? (
+                <span>{bet.group.replace("Group", "Grupp")}</span>
+              ) : (
+                <span>{bet.stage.replace("Group", "Grupp")}</span>
+              )}
             </Typography>
           </Grid>
         </Grid>
-        <CardActions className={classes.cardActionsRoot}>
-          <Grid
-            container
-            direction="row"
-            justify="space-between"
-            alignItems="center"
-            spacing={2}
-          >
-            <Grid item xs={5}>
-              <ResultInput
-                teamName={bet.home.team}
-                onChangeResult={(val) => {
-                  bet.home.result = val;
-                  onChange(bet);
-                }}
-                initialValue={bet.home.result}
-                disabled={started}
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="body1" component="div" align={"center"}>
-                <span>{kickoff.format("HH:mm")}</span>
-              </Typography>
-            </Grid>
-            <Grid item xs={5}>
-              <ResultInput
-                teamName={bet.away.team}
-                onChangeResult={(val) => {
-                  bet.away.result = val;
-                  onChange(bet);
-                }}
-                initialValue={bet.away.result}
-                disabled={started}
-              />
-            </Grid>
+      </CardContent>
+      <CardContent className={classes.cardActionsRoot}>
+        <Grid
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+          spacing={2}
+        >
+          <Grid item xs={5}>
+            <ResultInput
+              teamName={bet.home.team}
+              onChangeResult={(val) => {
+                bet.home.result = val;
+                onChange(bet);
+              }}
+              initialValue={bet.home.result}
+              disabled={disabled}
+            />
           </Grid>
-        </CardActions>
+          <Grid item xs={2}>
+            <Typography variant="body1" component="div" align={"center"}>
+              <span>{kickoff.format("HH:mm")}</span>
+            </Typography>
+          </Grid>
+          <Grid item xs={5}>
+            <ResultInput
+              teamName={bet.away.team}
+              onChangeResult={(val) => {
+                bet.away.result = val;
+                onChange(bet);
+              }}
+              initialValue={bet.away.result}
+              disabled={disabled}
+            />
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   );
