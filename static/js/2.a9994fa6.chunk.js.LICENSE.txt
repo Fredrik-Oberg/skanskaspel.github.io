@@ -165,3 +165,5 @@ and limitations under the License.
  */
 
 //! moment.js
+
+//! moment.js locale configuration
