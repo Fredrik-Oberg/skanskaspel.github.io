@@ -1,22 +1,29 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  useMediaQuery,
+  useTheme,
+  makeStyles,
+} from "@material-ui/core";
+
 import Loader from "../Loader";
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    minWidth: 470,
   },
 });
 
 function Results({ firebase }) {
   const [results, setResults] = React.useState(null);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("xs"));
 
   React.useEffect(() => {
     async function getResults() {
@@ -28,31 +35,50 @@ function Results({ firebase }) {
   }, [firebase.functions]);
 
   const classes = useStyles();
-
+  const condensedHeader = matches ? "P" : "Poäng";
   return !results ? (
     <Loader />
   ) : (
     <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table" size="small">
+      <Table className={classes.table} size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Namn</TableCell>
-            <TableCell align="right">Totalt</TableCell>
-            <TableCell align="right">2 Poäng</TableCell>
-            <TableCell align="right">1 Poäng</TableCell>
-            <TableCell align="right">0 Poäng</TableCell>
+            <TableCell colSpan={1}>#</TableCell>
+            <TableCell colSpan={7}>Namn</TableCell>
+            <TableCell align="center">Totalt</TableCell>
+            <TableCell
+              align="center"
+              colSpan={1}
+            >{`2 ${condensedHeader}`}</TableCell>
+            <TableCell
+              align="center"
+              colSpan={1}
+            >{`1 ${condensedHeader}`}</TableCell>
+            <TableCell
+              align="center"
+              colSpan={1}
+            >{`0 ${condensedHeader}`}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {results.map((row) => (
+          {results.map((row, i) => (
             <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
+              <TableCell colSpan={1}>
+                {i === 0 ? "🥇" : i === 1 ? "🥈" : ""}
               </TableCell>
-              <TableCell align="right">{row.totalPoints}</TableCell>
-              <TableCell align="right">{row.fullPoints}</TableCell>
-              <TableCell align="right">{row.correctOutcomes}</TableCell>
-              <TableCell align="right">{row.wrongOutcomes}</TableCell>
+              <TableCell colSpan={7}>{row.name}</TableCell>
+              <TableCell align="center" colSpan={1}>
+                {row.totalPoints}
+              </TableCell>
+              <TableCell align="center" colSpan={1}>
+                {row.fullPoints}
+              </TableCell>
+              <TableCell align="center" colSpan={1}>
+                {row.correctOutcomes}
+              </TableCell>
+              <TableCell align="center" colSpan={1}>
+                {row.wrongOutcomes}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

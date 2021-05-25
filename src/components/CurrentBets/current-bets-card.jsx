@@ -1,5 +1,4 @@
 import React from "react";
-import moment from "moment";
 import {
   Box,
   Card,
@@ -7,7 +6,6 @@ import {
   CardContent,
   Grid,
   makeStyles,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -16,6 +14,7 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
+import moment from "../moment";
 import FlagIcon from "../Icons";
 import { countryNamesSe } from "../../country-names.se";
 
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "flex-end",
   },
   table: {
-    width: "100%",
+    width: "320px",
   },
   tableBodyRowCell: {
     [theme.breakpoints.down("xs")]: {
@@ -55,6 +54,16 @@ const Country = ({ teamName }) => {
 function CurrentBetsCard({ bets }) {
   const kickoff = moment(bets.kickoff);
   const classes = useStyles();
+  bets.usersBet.sort((a, b) => {
+    var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+    var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+  });
   return (
     <Card variant="outlined" className={classes.root}>
       <CardContent>
@@ -69,16 +78,20 @@ function CurrentBetsCard({ bets }) {
             <Country teamName={bets.homeTeam} />
           </Grid>
           <Grid item>
-            <Typography variant="body1" component="div">
-              -
-            </Typography>
+            <Box mt={"15px"}>
+              <Typography variant="body1" component="div">
+                {bets.homeResult !== null && bets.awayResult !== null
+                  ? `${bets.homeResult} - ${bets.awayResult}`
+                  : "Pågår"}
+              </Typography>
+            </Box>
           </Grid>
           <Grid item>
             <Country teamName={bets.awayTeam} />
           </Grid>
           <Grid item className={classes.cardHeaderDateTimeGridItem}>
             <Typography variant="body1" component="div">
-              <span>{`${kickoff.format("dddd MM/DD")}`}</span>
+              <span>{`${kickoff.format("dddd DD/MM")}`}</span>
             </Typography>
             <Typography variant="body1" component="div" align="center">
               <span>{`${kickoff.format("HH:mm")}`}</span>
@@ -91,7 +104,6 @@ function CurrentBetsCard({ bets }) {
             direction="column"
             justify="space-between"
             alignItems="center"
-            spacing={2}
             style={{
               marginTop: "10px",
             }}
@@ -109,7 +121,7 @@ function CurrentBetsCard({ bets }) {
                   <TableHead>
                     <TableRow>
                       <TableCell>Namn</TableCell>
-                      <TableCell>Resultat</TableCell>
+                      <TableCell>Tipp</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>

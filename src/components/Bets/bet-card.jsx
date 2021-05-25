@@ -1,18 +1,14 @@
 import React from "react";
-// TODO moment locale to sv
-import moment from "moment";
 import {
   Card,
-  CardActions,
   CardContent,
-  Divider,
   Box,
   Grid,
   makeStyles,
   Typography,
   Chip,
-  CardHeader,
 } from "@material-ui/core";
+import moment from "../moment";
 import ResultInput from "./result-input";
 
 const useStyles = makeStyles((theme) => ({
@@ -42,17 +38,24 @@ function BetCard({ bet, onChange, disableIfStarted }) {
       variant="outlined"
       style={{
         marginBottom: "15px",
-        backgroundColor: bet.isFinished ? "#b9b9b9" : "initial",
+        backgroundColor: bet.isFinished ? "rgb(241 241 241)" : "initial",
         width: "373px",
       }}
     >
-      <CardContent spacing={4}>
-        {!bet.hasResult && (
+      {!bet.hasResult && (
+        <CardContent spacing={4}>
           <Box width={"100%"} textAlign="center">
-            <Chip label="Tips saknas" color="primary" />
+            <Chip
+              label="Tips saknas"
+              color="primary"
+              style={{
+                color: "#000",
+                backgroundColor: "#FCBF49",
+              }}
+            />
           </Box>
-        )}
-      </CardContent>
+        </CardContent>
+      )}
       <CardContent className={classes.cardContentRoot}>
         <Grid
           container
@@ -62,7 +65,7 @@ function BetCard({ bet, onChange, disableIfStarted }) {
         >
           <Grid item>
             <Typography variant="body1" component="div">
-              <span>{kickoff.format("dddd MM/DD")}</span>
+              <span>{kickoff.format("dddd DD/MM")}</span>
             </Typography>
           </Grid>
           <Grid item>
@@ -70,7 +73,7 @@ function BetCard({ bet, onChange, disableIfStarted }) {
               {bet.group ? (
                 <span>{bet.group.replace("Group", "Grupp")}</span>
               ) : (
-                <span>{bet.stage.replace("Group", "Grupp")}</span>
+                <span>{bet.stage}</span>
               )}
             </Typography>
           </Grid>

@@ -31,26 +31,51 @@ function Authentication(props) {
       }
     );
     return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
-  }, [firebase, setIsSignedIn, setWaitingForEmailConfirmation, setShowLoader]);
-
+  }, [
+    firebase,
+    setIsSignedIn,
+    setWaitingForEmailConfirmation,
+    setShowLoader,
+    waitingForEmailConfirmation,
+  ]);
+  console.log(waitingForEmailConfirmation);
   return showLoader ? (
     <Loader />
   ) : !isSignedIn ? (
-    <Grid container direction="column" justify="center" alignItems="center">
-      <Grid item>
-        <Box width={480}>
-          <StyledFirebaseAuth
-            uiConfig={firebase.uiConfig}
-            firebaseAuth={firebase.auth}
-          />
-          {waitingForEmailConfirmation && (
-            <Typography variant="h5" style={{ marginTop: "20px" }}>
-              Verifiera din epost {userEmail} och logga sedan in igen.
-            </Typography>
-          )}
+    <Box>
+      <StyledFirebaseAuth
+        uiConfig={firebase.uiConfig}
+        firebaseAuth={firebase.auth}
+      />
+      {!waitingForEmailConfirmation ? (
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          mt="40px"
+        >
+          <Typography
+            fontWeight="fontWeightBold"
+            style={{ fontStyle: "italic" }}
+          >
+            ”Av alla oviktiga ting i världen är fotboll det viktigaste”
+          </Typography>
+          <Typography variant="body2">- Påven Johannes Paulus II</Typography>
         </Box>
-      </Grid>
-    </Grid>
+      ) : (
+        <Box textAlign="center" mt="40px">
+          <Typography variant="h6">Tack för din anmälan!</Typography>
+          <Typography variant="h6">
+            Du kommer strax att få ett mail med en länk. Klicka på länken för
+            att verifiera dina uppgifter och logga in här på nytt.
+          </Typography>
+          <br />
+          <Typography variant="h6">
+            Sen är du redo att spela bort dina besparingar.
+          </Typography>
+        </Box>
+      )}
+    </Box>
   ) : null;
 }
 export default Authentication;

@@ -12,7 +12,7 @@ const extendBetResult = (res) =>
       // Add isFinished and hasResult
       const kickoff = moment(bet.kickoff);
       const isFinished = moment().add("105", "minutes").isAfter(kickoff);
-      const hasResult = bet.home.result != null && bet.away.result != null;
+      const hasResult = bet.home.result !== null && bet.away.result !== null;
       return { ...bet, isFinished, hasResult };
     })
     // Sort on kickoff then on is finished

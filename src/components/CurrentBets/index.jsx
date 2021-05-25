@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
+import moment from "../moment";
 import CurrentBetsCard from "./current-bets-card";
 import Loader from "../Loader";
 
@@ -10,7 +11,6 @@ function CurrentBets({ firebase }) {
     async function getCurrentBets() {
       const get = firebase.functions.httpsCallable("currentBets");
       const res = await get();
-
       setCurrentBets(res.data);
 
       // Local json file
@@ -32,11 +32,13 @@ function CurrentBets({ firebase }) {
       {currentBets == null ? (
         <Loader />
       ) : currentBets.length ? (
-        currentBets.map((bets, i) => (
-          <CurrentBetsCard key={bets.kickoff + i} bets={bets} />
-        ))
+        currentBets
+          .sort((a, b) => (a.kickoff > b.kickoff ? -1 : 1))
+          .map((bets, i) => (
+            <CurrentBetsCard key={bets.kickoff + i} bets={bets} />
+          ))
       ) : (
-        <h3>Inga matcher har ännu startat</h3>
+        <h3>Inga pågående matcher</h3>
       )}
     </Grid>
   );

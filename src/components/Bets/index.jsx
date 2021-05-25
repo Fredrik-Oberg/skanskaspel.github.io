@@ -13,7 +13,7 @@ const extendBetResult = (res) =>
       // Add isFinished and hasResult
       const kickoff = moment(bet.kickoff);
       const isFinished = moment().add("3", "hours").isAfter(kickoff);
-      const hasResult = bet.home.result != null && bet.away.result != null;
+      const hasResult = bet.home.result !== null && bet.away.result !== null;
       return { ...bet, isFinished, hasResult };
     })
     // Sort on kickoff then on is finished
@@ -79,7 +79,6 @@ function Bets({ firebase }) {
     const saveBets = firebase.functions.httpsCallable("saveBets");
     saveBets({ bets: changedBets })
       .then((res) => {
-        console.log(res);
         const data = extendBetResult(res);
         setBets(data);
         snackbar.showMessage("Spel sparat");
@@ -123,24 +122,51 @@ function Bets({ firebase }) {
               >
                 Spara
               </Fab>
-              <Grid item xs={12}>
-                <Typography variant={"h4"} style={{ marginBottom: "15px" }}>
-                  Tippa
-                </Typography>
-              </Grid>
+              {bets.filter((x) => !x.isFinished).length != 0 && (
+                <Grid item xs={12}>
+                  <Typography variant={"h4"} style={{ marginBottom: "15px" }}>
+                    Tippa
+                  </Typography>
+                </Grid>
+              )}
 
-              {bets.map((bet, i) => {
-                return (
-                  <Grid>
-                    <BetCard
-                      disableIfStarted
-                      bet={bet}
-                      key={bet.kickoff + i}
-                      onChange={handleOnChange}
-                    />
-                  </Grid>
-                );
-              })}
+              {bets
+                .map((bet, i) => {
+                  if (bet.isFinished) return false;
+                  return (
+                    <Grid>
+                      <BetCard
+                        disableIfStarted
+                        bet={bet}
+                        key={bet.kickoff + i + bet.hasResult}
+                        onChange={handleOnChange}
+                      />
+                    </Grid>
+                  );
+                })
+                .filter(Boolean)}
+              {bets.filter((x) => x.isFinished).length != 0 && (
+                <Grid item xs={12}>
+                  <Typography variant={"h4"} style={{ marginBottom: "15px" }}>
+                    Startade matcher
+                  </Typography>
+                </Grid>
+              )}
+              {bets
+                .map((bet, i) => {
+                  if (!bet.isFinished) return false;
+                  return (
+                    <Grid>
+                      <BetCard
+                        disableIfStarted
+                        bet={bet}
+                        key={bet.kickoff + i + bet.hasResult}
+                        onChange={() => {}}
+                      />
+                    </Grid>
+                  );
+                })
+                .filter(Boolean)}
             </>
           ) : (
             <Grid item>

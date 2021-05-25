@@ -6,6 +6,7 @@ import UserProfile from "./components/UserProfile";
 import { AppBar, Tabs, Tab, Typography, Box, Grid } from "@material-ui/core";
 import Result from "./components/Result";
 import Admin from "./components/Admin";
+import Rules from "./components/Rules";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -82,7 +83,7 @@ function Home({ firebase }) {
         >
           <Tab label="Tippa" {...a11yProps(0)} />
           <Tab label="Pågående matcher" {...a11yProps(1)} />
-          <Tab label="Poäng" {...a11yProps(2)} />
+          <Tab label="Tabell" {...a11yProps(2)} />
           <Tab label="Regler" {...a11yProps(3)} />
           <Tab label="Mina inställningar" {...a11yProps(4)} />
           {isAdmin && <Tab label="Admin" {...a11yProps(5)} />}
@@ -105,7 +106,9 @@ function Home({ firebase }) {
         </Grid>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <span>Rules</span>
+        <Grid container direction="column" justify="center" alignItems="center">
+          <Rules />
+        </Grid>
       </TabPanel>
       <TabPanel value={value} index={4}>
         <Grid container direction="column" justify="center" alignItems="center">

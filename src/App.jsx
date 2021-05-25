@@ -8,7 +8,6 @@ import Authentication from "./components/Authentication";
 
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
-import Loader from "./components/Loader";
 
 const createTheme = () => {
   const breakpoints = createBreakpoints({});
