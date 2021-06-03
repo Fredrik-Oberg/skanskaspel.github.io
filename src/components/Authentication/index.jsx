@@ -1,8 +1,9 @@
 import React from "react";
 import "firebase/auth";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import { Box, Grid, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import Loader from "../Loader";
+import "./auth.css";
 
 function Authentication(props) {
   const { firebase, isSignedIn, setIsSignedIn } = props;

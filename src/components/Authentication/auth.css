@@ -1,0 +1,14 @@
+/* #firebaseui_container .firebaseui-title {
+  font-size: 0px;
+}
+.firebaseui-title:after {
+  font-size: 20px;
+  content: "Logga in med epost";
+} */
+/* .firebaseui-label[for="ui-sign-in-email-input"] {
+  font-size: 0px;
+}
+.firebaseui-label[for="ui-sign-in-email-input"]:after {
+  font-size: 20px;
+  content: "Logga in med epost";
+} */
