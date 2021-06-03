@@ -63,6 +63,7 @@ function CurrentBetsCard({ bets }) {
     if (nameA > nameB) {
       return 1;
     }
+    return 0;
   });
   return (
     <Card variant="outlined" className={classes.root}>

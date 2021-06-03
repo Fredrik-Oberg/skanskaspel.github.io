@@ -35,6 +35,11 @@ function Admin({ firebase }) {
       setAdminBets(data);
       setOriginalBets(JSON.parse(JSON.stringify(data)));
     }
+    async function getResults() {
+      const get = firebase.functions.httpsCallable("ressssss");
+      const res = await get();
+      console.log(res);
+    }
     getAdmin();
   }, [firebase.functions]);
 

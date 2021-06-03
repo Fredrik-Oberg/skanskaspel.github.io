@@ -1,6 +1,7 @@
 import app from "firebase/app";
 import "firebase/auth";
 import "firebase/functions";
+import "firebase/storage";
 
 const config = {
   apiKey: "AIzaSyBAJqLiR_0up73A5ewidTHHg8k8nU1s1BI",
@@ -17,6 +18,7 @@ class Firebase {
     app.initializeApp(config);
     this.auth = app.auth();
     this.functions = app.app().functions("europe-west3");
+    this.storage = app.app().storage();
     this.uiConfig = {
       // Popup signin flow rather than redirect flow.
       signInFlow: "popup",
