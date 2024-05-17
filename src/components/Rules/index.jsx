@@ -1,21 +1,14 @@
-import React from "react";
+import React from 'react';
 
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from '@mui/material';
 
 const Bold = ({ text }) => (
-  <Typography
-    fontWeight="fontWeightBold"
-    style={{ fontWeight: "bold", marginBottom: "10px" }}
-  >
+  <Typography fontWeight="fontWeightBold" style={{ fontWeight: 'bold', marginBottom: '10px' }}>
     {text}
   </Typography>
 );
 const Text = ({ indent, text }) => (
-  <Typography
-    style={{ marginLeft: indent ? "20px" : "0px", marginBottom: "15px" }}
-  >
-    {text}
-  </Typography>
+  <Typography style={{ marginLeft: indent ? '20px' : '0px', marginBottom: '15px' }}>{text}</Typography>
 );
 function Rules() {
   return (

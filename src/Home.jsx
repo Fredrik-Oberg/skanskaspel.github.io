@@ -1,14 +1,14 @@
 // import "./App.css";
-import React from "react";
-import Bets from "./components/Bets";
-import CurrentBets from "./components/CurrentBets";
-import UserProfile from "./components/UserProfile";
-import { AppBar, Tabs, Tab, Typography, Box, Grid } from "@material-ui/core";
-import Result from "./components/Result";
-import Admin from "./components/Admin";
-import Rules from "./components/Rules";
-import TestArea from "./components/Test-area";
-import Thrashtalk from "./components/Thrashtalk";
+import React from 'react';
+import Bets from './components/Bets';
+import CurrentBets from './components/CurrentBets';
+import UserProfile from './components/UserProfile';
+import { AppBar, Tabs, Tab, Typography, Box, Grid } from '@mui/material';
+import Result from './components/Result';
+import Admin from './components/Admin';
+import Rules from './components/Rules';
+import TestArea from './components/Test-area';
+import Thrashtalk from './components/Thrashtalk';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -33,7 +33,7 @@ function TabPanel(props) {
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
   };
 }
 function Home({ firebase }) {
@@ -80,8 +80,8 @@ function Home({ firebase }) {
           aria-label="tabs panel"
           // style={{ backgroundColor: "#F4A261" }}
           variant="scrollable"
-          scrollButtons="on"
-          TabIndicatorProps={{ style: { background: "#f7dd16" } }}
+          scrollButtons="auto"
+          TabIndicatorProps={{ style: { background: '#f7dd16' } }}
         >
           <Tab label="Tippa" {...a11yProps(0)} />
           <Tab label="Matcher" {...a11yProps(1)} />
@@ -131,12 +131,7 @@ function Home({ firebase }) {
       )}
       {isAdmin && (
         <TabPanel value={value} index={7}>
-          <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="center"
-          >
+          <Grid container direction="column" justify="center" alignItems="center">
             <TestArea firebase={firebase} />
           </Grid>
         </TabPanel>

@@ -1,11 +1,10 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Card,
   CardActions,
   CardContent,
   Grid,
-  makeStyles,
   Table,
   TableBody,
   TableCell,
@@ -13,46 +12,47 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from "@material-ui/core";
-import moment from "../moment";
-import FlagIcon from "../Icons";
-import { countryNamesSe } from "../../country-names.se";
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import moment from '../moment';
+import FlagIcon from '../Icons';
+import { countryNamesSe } from '../../country-names.se';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: "375px",
-    marginBottom: "15px",
-    width: "100%",
-    [theme.breakpoints.down("xs")]: {
-      minWidth: "100%",
+    minWidth: '375px',
+    marginBottom: '15px',
+    width: '100%',
+    [theme.breakpoints.down('xs')]: {
+      minWidth: '100%',
     },
   },
   cardHeaderDateTimeGridItem: {
-    alignSelf: "flex-end",
+    alignSelf: 'flex-end',
   },
   cardAction: {
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('xs')]: {
       padding: 0,
     },
   },
   table: {
-    width: "320px",
-    [theme.breakpoints.down("xs")]: {
-      width: "100%",
+    width: '320px',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
     },
   },
   tableBodyRowCell: {
-    [theme.breakpoints.down("xs")]: {
-      fontSize: "0.7rem",
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '0.7rem',
     },
   },
   kickoff: {
-    textTransform: "capitalize",
+    textTransform: 'capitalize',
   },
 }));
 
 const Country = ({ teamName }) => {
-  const country = (teamName || "").replace(" ", "_");
+  const country = (teamName || '').replace(' ', '_');
   const seName = countryNamesSe[country];
   return (
     <>
@@ -86,36 +86,22 @@ function CurrentBetsCard({ bets }) {
       const bRes = parseInt(b.homeResult, 10);
       const aaRes = parseInt(a.awayResult, 10);
       const baRes = parseInt(b.awayResult, 10);
-      return bRes > aRes
-        ? 1
-        : bRes < aRes
-        ? -1
-        : baRes > aaRes
-        ? 1
-        : baRes < aaRes
-        ? -1
-        : 0;
+      return bRes > aRes ? 1 : bRes < aRes ? -1 : baRes > aaRes ? 1 : baRes < aaRes ? -1 : 0;
     });
 
   return (
     <Card variant="outlined" className={classes.root}>
       <CardContent>
-        <Grid
-          container
-          direction="row"
-          justify="space-between"
-          alignItems="center"
-          spacing={2}
-        >
+        <Grid container direction="row" justify="space-between" alignItems="center" spacing={2}>
           <Grid item>
             <Country teamName={bets.homeTeam} />
           </Grid>
           <Grid item>
-            <Box mt={"15px"}>
+            <Box mt={'15px'}>
               <Typography variant="body1" component="div">
                 {bets.homeResult !== null && bets.awayResult !== null
                   ? `${bets.homeResult} - ${bets.awayResult}`
-                  : "Pågår"}
+                  : 'Pågår'}
               </Typography>
             </Box>
           </Grid>
@@ -124,12 +110,10 @@ function CurrentBetsCard({ bets }) {
           </Grid>
           <Grid item className={classes.cardHeaderDateTimeGridItem}>
             <Typography variant="body1" component="div">
-              <span className={classes.kickoff}>{`${kickoff.format(
-                "dddd DD/MM"
-              )}`}</span>
+              <span className={classes.kickoff}>{`${kickoff.format('dddd DD/MM')}`}</span>
             </Typography>
             <Typography variant="body1" component="div" align="center">
-              <span>{`${kickoff.format("HH:mm")}`}</span>
+              <span>{`${kickoff.format('HH:mm')}`}</span>
             </Typography>
           </Grid>
         </Grid>
@@ -140,15 +124,15 @@ function CurrentBetsCard({ bets }) {
             justify="space-between"
             alignItems="center"
             style={{
-              marginTop: "10px",
+              marginTop: '10px',
             }}
           >
             <Grid
               item
               justify="space-between"
-              key={"header"}
+              key={'header'}
               style={{
-                paddingTop: "0px",
+                paddingTop: '0px',
               }}
             >
               <TableContainer>
@@ -162,16 +146,10 @@ function CurrentBetsCard({ bets }) {
                   <TableBody>
                     {bets.usersBet.map((userBet) => (
                       <TableRow key={userBet.name}>
-                        <TableCell
-                          component="th"
-                          className={classes.tableBodyRowCell}
-                        >
+                        <TableCell component="th" className={classes.tableBodyRowCell}>
                           {userBet.name}
                         </TableCell>
-                        <TableCell
-                          component="th"
-                          className={classes.tableBodyRowCell}
-                        >
+                        <TableCell component="th" className={classes.tableBodyRowCell}>
                           {userBet.homeResult} - {userBet.awayResult}
                         </TableCell>
                       </TableRow>

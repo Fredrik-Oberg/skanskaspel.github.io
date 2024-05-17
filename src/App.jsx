@@ -1,31 +1,30 @@
 // import "./App.css";
-import React from "react";
+import React from 'react';
 
-import Header from "./Header";
-import Home from "./Home";
-import { FirebaseContext } from "./components/Firebase";
-import Authentication from "./components/Authentication";
+import Header from './Header';
+import Home from './Home';
+import { FirebaseContext } from './components/Firebase';
+import Authentication from './components/Authentication';
 
-import { createTheme,  ThemeProvider } from "@material-ui/core/styles";
-import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
+import { createTheme, ThemeProvider, breakpoints } from '@mui/material/styles';
 
 const createAppTheme = () => {
-  const breakpoints = createBreakpoints({});
+  const theme = createTheme();
   const options = {
     palette: {
-      type: "light",
+      type: 'light',
       primary: {
-        main: "#D62828",
+        main: '#D62828',
       },
       secondary: {
-        main: "#f7dd16",
+        main: '#f7dd16',
         // main: "#FCBF49",
       },
     },
     typography: {
       body1: {
-        [breakpoints.down("xs")]: {
-          fontSize: "0.7rem",
+        [theme.breakpoints.down('xs')]: {
+          fontSize: '0.7rem',
         },
       },
     },
@@ -47,11 +46,7 @@ function App() {
             {!isSignedIn ? (
               <>
                 <Header />
-                <Authentication
-                  firebase={firebase}
-                  isSignedIn={isSignedIn}
-                  setIsSignedIn={setIsSignedIn}
-                />
+                <Authentication firebase={firebase} isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} />
               </>
             ) : (
               <Home firebase={firebase} />

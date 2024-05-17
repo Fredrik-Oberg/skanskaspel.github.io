@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import * as firebaseui from 'firebaseui';
@@ -17,39 +17,33 @@ import 'firebaseui/dist/firebaseui.css';
 //     className?: string;
 // }
 
+const StyledFirebaseAuth = ({ uiConfig, firebaseAuth, className, uiCallback }) => {
+  const [userSignedIn, setUserSignedIn] = useState(false);
+  const elementRef = useRef(null);
+  useEffect(() => {
+    // Get or Create a firebaseUI instance.
+    const firebaseUiWidget = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebaseAuth);
+    if (uiConfig.signInFlow === 'popup') firebaseUiWidget.reset();
 
-const StyledFirebaseAuth = ({uiConfig, firebaseAuth, className}) => {
-    const [userSignedIn, setUserSignedIn] = useState(false);
-    const elementRef = useRef(null);
+    // We track the auth state to reset firebaseUi if the user signs out.
+    const unregisterAuthObserver = onAuthStateChanged(firebaseAuth, (user) => {
+      if (!user && userSignedIn) firebaseUiWidget.reset();
+      setUserSignedIn(!!user);
+    });
 
-    useEffect(() => {
-        // Get or Create a firebaseUI instance.
-        const firebaseUiWidget = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebaseAuth);
-        if (uiConfig.signInFlow === 'popup')
-            firebaseUiWidget.reset();
+    // Trigger the callback if any was set.
+    if (uiCallback) uiCallback(firebaseUiWidget);
 
-        // We track the auth state to reset firebaseUi if the user signs out.
-        const unregisterAuthObserver = onAuthStateChanged(firebaseAuth, (user) => {
-            if (!user && userSignedIn)
-                firebaseUiWidget.reset();
-            setUserSignedIn(!!user);
-        });
+    // Render the firebaseUi Widget.
 
-        // Trigger the callback if any was set.
-        // if (uiCallback)
-        //     uiCallback(firebaseUiWidget);
+    firebaseUiWidget.start(elementRef.current, uiConfig);
+    return () => {
+      unregisterAuthObserver();
+      firebaseUiWidget.reset();
+    };
+  }, [firebaseui, uiConfig, firebaseAuth, userSignedIn, uiCallback]);
 
-        // Render the firebaseUi Widget.
-        // @ts-ignore
-        firebaseUiWidget.start(elementRef.current, uiConfig);
-
-        return () => {
-            unregisterAuthObserver();
-            firebaseUiWidget.reset();
-        };
-    }, [firebaseui, uiConfig, firebaseAuth, userSignedIn ]);
-
-    return <div className={className} ref={elementRef} />;
+  return <div className={className} ref={elementRef} />;
 };
 
 export default StyledFirebaseAuth;

@@ -1,31 +1,32 @@
-import React from "react";
-import { createStyles, makeStyles } from "@material-ui/core/styles";
-import Avatar from "@material-ui/core/Avatar";
-import { deepOrange } from "@material-ui/core/colors";
+import React from 'react';
+import { createStyles, makeStyles } from '@mui/styles';
+
+import Avatar from '@mui/material/Avatar';
+import { deepOrange } from '@mui/material/colors';
 const useStyles = makeStyles((theme) =>
   createStyles({
     messageRow: {
-      display: "flex",
+      display: 'flex',
     },
     messageRowRight: {
-      display: "flex",
-      justifyContent: "flex-end",
+      display: 'flex',
+      justifyContent: 'flex-end',
     },
     messageBlue: {
-      position: "relative",
-      marginLeft: "20px",
-      marginBottom: "10px",
-      padding: "10px",
-      backgroundColor: "#a8ddfd82",
+      position: 'relative',
+      marginLeft: '20px',
+      marginBottom: '10px',
+      padding: '10px',
+      backgroundColor: '#a8ddfd82',
       //height: "50px",
-      textAlign: "left",
+      textAlign: 'left',
       font: "400 .9em 'Open Sans', sans-serif",
-      border: "1px solid #97C6E3",
-      borderRadius: "10px",
-      [theme.breakpoints.down("xs")]: {
-        width: "160px",
+      border: '1px solid #97C6E3',
+      borderRadius: '10px',
+      [theme.breakpoints.down('xs')]: {
+        width: '160px',
       },
-      width: "400px",
+      width: '400px',
       // "&:after": {
       //   content: "''",
       //   position: "absolute",
@@ -50,21 +51,21 @@ const useStyles = makeStyles((theme) =>
       // },
     },
     messageOrange: {
-      position: "relative",
-      marginRight: "20px",
-      marginBottom: "10px",
-      padding: "10px",
-      backgroundColor: "rgb(252 191 73 / 55%)",
-      width: "160px",
+      position: 'relative',
+      marginRight: '20px',
+      marginBottom: '10px',
+      padding: '10px',
+      backgroundColor: 'rgb(252 191 73 / 55%)',
+      width: '160px',
       //height: "50px",
-      textAlign: "left",
+      textAlign: 'left',
       font: "400 .9em 'Open Sans', sans-serif",
-      border: "1px solid #dfd087",
-      borderRadius: "10px",
-      [theme.breakpoints.down("xs")]: {
-        width: "160px",
+      border: '1px solid #dfd087',
+      borderRadius: '10px',
+      [theme.breakpoints.down('xs')]: {
+        width: '160px',
       },
-      width: "400px",
+      width: '400px',
       // "&:after": {
       //   content: "''",
       //   position: "absolute",
@@ -94,12 +95,12 @@ const useStyles = makeStyles((theme) =>
       margin: 0,
     },
     messageTimeStampRight: {
-      position: "absolute",
-      fontSize: ".85em",
-      fontWeight: "300",
-      marginTop: "10px",
-      bottom: "0px",
-      right: "5px",
+      position: 'absolute',
+      fontSize: '.85em',
+      fontWeight: '300',
+      marginTop: '10px',
+      bottom: '0px',
+      right: '5px',
     },
 
     orange: {
@@ -109,32 +110,29 @@ const useStyles = makeStyles((theme) =>
       height: theme.spacing(4),
     },
     avatarNothing: {
-      color: "transparent",
-      backgroundColor: "transparent",
+      color: 'transparent',
+      backgroundColor: 'transparent',
       width: theme.spacing(4),
       height: theme.spacing(4),
     },
     displayName: {
-      marginLeft: "20px",
+      marginLeft: '20px',
     },
     displayNameRight: {
-      marginRight: "20px",
-      textAlign: "right",
+      marginRight: '20px',
+      textAlign: 'right',
     },
-  })
+  }),
 );
 
 export const MessageLeft = (props) => {
-  const message = props.message ? props.message : "Tomt meddelande";
-  const timestamp = props.timestamp ? props.timestamp : "";
-  const displayName = props.displayName ? props.displayName : "-";
+  const message = props.message ? props.message : 'Tomt meddelande';
+  const timestamp = props.timestamp ? props.timestamp : '';
+  const displayName = props.displayName ? props.displayName : '-';
   const classes = useStyles();
   return (
     <>
-      <div
-        className={classes.messageRow}
-        onDoubleClick={() => console.log("dislike")}
-      >
+      <div className={classes.messageRow} onDoubleClick={() => console.log('dislike')}>
         {/* <Avatar
           alt={displayName}
           className={classes.orange}
@@ -155,9 +153,9 @@ export const MessageLeft = (props) => {
 };
 export const MessageRight = (props) => {
   const classes = useStyles();
-  const message = props.message ? props.message : "Tomt meddelande";
-  const timestamp = props.timestamp ? props.timestamp : "";
-  const displayName = props.displayName ? props.displayName : "-";
+  const message = props.message ? props.message : 'Tomt meddelande';
+  const timestamp = props.timestamp ? props.timestamp : '';
+  const displayName = props.displayName ? props.displayName : '-';
   return (
     <div className={classes.messageRowRight}>
       <div>

@@ -1,9 +1,5 @@
-import React from "react";
-import {
-  Visibility,
-  VisibilityOff,
-  Save as SaveIcon,
-} from "@material-ui/icons/";
+import React from 'react';
+import { Visibility, VisibilityOff, Save as SaveIcon } from '@mui/icons-material';
 import {
   Button,
   FormControl,
@@ -13,7 +9,7 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-} from "@material-ui/core";
+} from '@mui/material';
 
 function UserProfile({ firebase }) {
   var user = firebase.auth.currentUser;
@@ -27,7 +23,7 @@ function UserProfile({ firebase }) {
     event.preventDefault();
   };
   const updateUserInfo = (event) => {
-    if (password && password.trim() !== "") {
+    if (password && password.trim() !== '') {
       updatePassword(password.trim());
     }
     // if (displayName && displayName.trim() !== "") {
@@ -51,10 +47,10 @@ function UserProfile({ firebase }) {
     user
       .updatePassword(newPassword)
       .then((e) => {
-        firebase.auth.signOut().then(() => (document.location.href = "/"));
+        firebase.auth.signOut().then(() => (document.location.href = '/'));
       })
       .catch((error) => {
-        if (error.code === "auth/weak-password") {
+        if (error.code === 'auth/weak-password') {
           setPasswordError(true);
         }
         // An error happened.
@@ -63,18 +59,16 @@ function UserProfile({ firebase }) {
   return (
     <>
       <Grid item>
-      <h3>{firebase.auth.currentUser.displayName}</h3>
-      </Grid >
+        <h3>{firebase.auth.currentUser.displayName}</h3>
+      </Grid>
       <Grid item>
         <Button
           variant="contained"
           color="secondary"
-          style={{ marginBottom: "30px" }}
-          onClick={() =>
-            firebase.auth.signOut().then(() => (document.location.href = "/"))
-          }
+          style={{ marginBottom: '30px' }}
+          onClick={() => firebase.auth.signOut().then(() => (document.location.href = '/'))}
         >
-          {"Logga ut"}
+          {'Logga ut'}
         </Button>
       </Grid>
       <Grid item>
@@ -88,12 +82,10 @@ function UserProfile({ firebase }) {
         />
       </FormControl> */}
         <FormControl variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">
-            Nytt Lösenord
-          </InputLabel>
+          <InputLabel htmlFor="outlined-adornment-password">Nytt Lösenord</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(event) => {
               setPassword(event.target.value);
@@ -120,11 +112,11 @@ function UserProfile({ firebase }) {
             </FormHelperText>
           )}
           <Button
-            type={"submit"}
+            type={'submit'}
             variant="contained"
             color="primary"
             size="large"
-            style={{ marginTop: "15px" }}
+            style={{ marginTop: '15px' }}
             startIcon={<SaveIcon />}
             onClick={updateUserInfo}
           >

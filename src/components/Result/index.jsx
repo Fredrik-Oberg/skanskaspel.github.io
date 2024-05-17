@@ -1,5 +1,5 @@
-import React from "react";
-import moment from "moment";
+import React from 'react';
+import moment from 'moment';
 
 import {
   Table,
@@ -10,37 +10,36 @@ import {
   TableRow,
   Paper,
   useTheme,
-  makeStyles,
   Collapse,
   Box,
   Typography,
-} from "@material-ui/core";
-
-import Loader from "../Loader";
-import FlagIcon from "../Icons";
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import Loader from '../Loader';
+import FlagIcon from '../Icons';
 
 const useStyles = makeStyles({
   table: {
     // minWidth: 470,
-    ".MuiTable .MuiTable .MuiTableCell-sizeSmall": {
-      padding: "0 0px 0px 11px",
+    '.MuiTable .MuiTable .MuiTableCell-sizeSmall': {
+      padding: '0 0px 0px 11px',
     },
   },
   firstTableRow: {
-    "&.Mui-selected, &.Mui-selected:hover": {
-      backgroundColor: "#3f51b526",
+    '&.Mui-selected, &.Mui-selected:hover': {
+      backgroundColor: '#3f51b526',
     },
-    cursor: "pointer",
-    "& > *": {
-      borderBottom: "unset",
+    cursor: 'pointer',
+    '& > *': {
+      borderBottom: 'unset',
     },
   },
   kickoff: {
-    textTransform: "capitalize",
+    textTransform: 'capitalize',
   },
   smallCell: {
-    padding: "6px",
-    fontSize: "10px",
+    padding: '6px',
+    fontSize: '10px',
   },
 });
 
@@ -50,7 +49,7 @@ function Results({ firebase }) {
 
   React.useEffect(() => {
     async function getResults() {
-      const get = firebase.functions.httpsCallable("resultsFile");
+      const get = firebase.functions.httpsCallable('resultsFile');
       const res = await get();
       console.log(res);
       sortOnResThen2p(res);
@@ -84,7 +83,7 @@ function Results({ firebase }) {
   );
 }
 const getCountry = (teamName) => {
-  return (teamName || "").replace(" ", "_");
+  return (teamName || '').replace(' ', '_');
 };
 export default Results;
 
@@ -147,15 +146,8 @@ function Row({ row, i }) {
   }
   return (
     <>
-      <TableRow
-        selected={open}
-        hover
-        className={classes.firstTableRow}
-        onClick={() => setOpen(!open)}
-      >
-        <TableCell colSpan={1}>
-          {row.gold ? "🥇" : row.silver ? "🥈" : (i + 1).toString()}
-        </TableCell>
+      <TableRow selected={open} hover className={classes.firstTableRow} onClick={() => setOpen(!open)}>
+        <TableCell colSpan={1}>{row.gold ? '🥇' : row.silver ? '🥈' : (i + 1).toString()}</TableCell>
         <TableCell colSpan={5}>{row.name}</TableCell>
         <TableCell align="center" colSpan={1}>
           {row.fullPoints}
@@ -168,10 +160,10 @@ function Row({ row, i }) {
         <TableCell
           colSpan={8}
           style={{
-            paddingTop: !open ? "0px" : "initial",
-            paddingBottom: !open ? "0px" : "initial",
-            paddingLeft: "2px",
-            paddingRight: "2px",
+            paddingTop: !open ? '0px' : 'initial',
+            paddingBottom: !open ? '0px' : 'initial',
+            paddingLeft: '2px',
+            paddingRight: '2px',
           }}
         >
           <Collapse in={open} timeout="auto" unmountOnExit>
@@ -198,50 +190,22 @@ function Row({ row, i }) {
                 <TableBody>
                   {(row.matches || []).map((historyRow) => (
                     <TableRow key={historyRow.kickoff + historyRow.teams.home}>
-                      <TableCell
-                        className={classes.smallCell}
-                        component="th"
-                        scope="row"
-                      >
-                        <FlagIcon
-                          country={getCountry(historyRow.teams.home)}
-                          small
-                        />
-                        <Typography
-                          variant="body2"
-                          style={{ fontSize: "8px" }}
-                          display="block"
-                        >
-                          {"VS"}
+                      <TableCell className={classes.smallCell} component="th" scope="row">
+                        <FlagIcon country={getCountry(historyRow.teams.home)} small />
+                        <Typography variant="body2" style={{ fontSize: '8px' }} display="block">
+                          {'VS'}
                         </Typography>
-                        <FlagIcon
-                          country={getCountry(historyRow.teams.away)}
-                          small
-                        />
+                        <FlagIcon country={getCountry(historyRow.teams.away)} small />
                       </TableCell>
-                      <TableCell
-                        className={`${classes.smallCell} ${classes.kickoff}`}
-                      >
-                        <Typography
-                          variant="body2"
-                          style={{ fontSize: "10px" }}
-                          display="block"
-                        >
-                          {`${moment(historyRow.kickoff).format("dddd")}`}
+                      <TableCell className={`${classes.smallCell} ${classes.kickoff}`}>
+                        <Typography variant="body2" style={{ fontSize: '10px' }} display="block">
+                          {`${moment(historyRow.kickoff).format('dddd')}`}
                         </Typography>
-                        <Typography
-                          variant="body2"
-                          style={{ fontSize: "10px" }}
-                          display="block"
-                        >
-                          {`${moment(historyRow.kickoff).format("DD/MM")}`}
+                        <Typography variant="body2" style={{ fontSize: '10px' }} display="block">
+                          {`${moment(historyRow.kickoff).format('DD/MM')}`}
                         </Typography>
-                        <Typography
-                          variant="body2"
-                          style={{ fontSize: "10px" }}
-                          display="block"
-                        >
-                          {`${moment(historyRow.kickoff).format("HH:mm")}`}
+                        <Typography variant="body2" style={{ fontSize: '10px' }} display="block">
+                          {`${moment(historyRow.kickoff).format('HH:mm')}`}
                         </Typography>
                       </TableCell>
                       <TableCell className={classes.smallCell} align="center">
@@ -257,25 +221,20 @@ function Row({ row, i }) {
                   ))}
                 </TableBody>
               </Table>
-              <Typography
-                variant="h6"
-                gutterBottom
-                component="div"
-                style={{ marginTop: "10px" }}
-              >
+              <Typography variant="h6" gutterBottom component="div" style={{ marginTop: '10px' }}>
                 Sammanfattning
               </Typography>
               <Table size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell className={classes.smallCell} align="center">
-                      {"2 P"}
+                      {'2 P'}
                     </TableCell>
                     <TableCell className={classes.smallCell} align="center">
-                      {"1 P"}
+                      {'1 P'}
                     </TableCell>
                     <TableCell className={classes.smallCell} align="center">
-                      {"0 P"}
+                      {'0 P'}
                     </TableCell>
                     <TableCell className={classes.smallCell} align="center">
                       Totalt

@@ -1,32 +1,26 @@
-import React from "react";
-import moment from "moment";
+import React from 'react';
+import moment from 'moment';
 
-import Loader from "../Loader";
-import BetCard from "../Bets/bet-card";
-import {
-  Button,
-  CircularProgress,
-  Fab,
-  Grid,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
-import SaveIcon from "@material-ui/icons/Save";
+import Loader from '../Loader';
+import BetCard from '../Bets/bet-card';
+import { CircularProgress, Fab, Grid, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import SaveIcon from '@mui/icons-material/Save';
 
-import { useSnackbar } from "material-ui-snackbar-provider";
+import { useSnackbar } from 'material-ui-snackbar-provider';
 
 const useStyles = makeStyles((theme) => ({
   fabWrapper: {
     margin: 0,
-    top: "auto",
+    top: 'auto',
     right: 20,
     bottom: 20,
-    left: "auto",
-    position: "fixed",
+    left: 'auto',
+    position: 'fixed',
   },
   fabProgress: {
-    color: "secondary",
-    position: "absolute",
+    color: 'secondary',
+    position: 'absolute',
     top: -6,
     left: -6,
     zIndex: 1,
@@ -39,7 +33,7 @@ const extendBetResult = (res) =>
       // Add isFinished, hasStarted and hasResult
       const kickoff = moment(bet.kickoff);
       const now = moment().unix() * 1000;
-      const betAdded105m = kickoff.add("105", "minutes").unix() * 1000;
+      const betAdded105m = kickoff.add('105', 'minutes').unix() * 1000;
 
       const hasStarted = bet.kickoff <= now;
       const isFinished = betAdded105m < now;
@@ -61,7 +55,7 @@ function Admin({ firebase }) {
   const classes = useStyles();
   React.useEffect(() => {
     async function getAdmin() {
-      const get = firebase.functions.httpsCallable("admin");
+      const get = firebase.functions.httpsCallable('admin');
       const res = await get();
       const data = extendBetResult(res);
 
@@ -81,12 +75,9 @@ function Admin({ firebase }) {
           x.away.team === bet.away.team &&
           x.home.team === bet.home.team &&
           x.group === bet.group &&
-          x.stage === bet.stage
+          x.stage === bet.stage,
       );
-      return (
-        bet.home.result == originalBet.home.result &&
-        bet.away.result == originalBet.away.result
-      );
+      return bet.home.result == originalBet.home.result && bet.away.result == originalBet.away.result;
     };
 
     // If one result is set other is null then we set 0
@@ -100,12 +91,10 @@ function Admin({ firebase }) {
         }
         return x;
       })
-      .filter(
-        (x) => x.home.result != null && x.away.result != null && !isPristine(x)
-      );
+      .filter((x) => x.home.result != null && x.away.result != null && !isPristine(x));
     filteredBets.forEach((x) => {
       if (x.home.result < 0 || x.away.result < 0) {
-        return alert("Negativt resultat i match");
+        return alert('Negativt resultat i match');
       }
     });
     if (filteredBets.length == 0) {
@@ -113,18 +102,18 @@ function Admin({ firebase }) {
 
       return;
     }
-    const saveResults = firebase.functions.httpsCallable("saveResults");
+    const saveResults = firebase.functions.httpsCallable('saveResults');
     saveResults({ bets: filteredBets })
       .then((res) => {
         console.log(res);
         const data = extendBetResult(res);
         setAdminBets(data);
-        snackbar.showMessage("Resultat sparat");
+        snackbar.showMessage('Resultat sparat');
         setIsSaving(false);
       })
       .catch((error) => {
-        console.error("onRejected function called: " + error.message);
-        snackbar.showMessage("Misslyckades med att spara");
+        console.error('onRejected function called: ' + error.message);
+        snackbar.showMessage('Misslyckades med att spara');
         setIsSaving(false);
       });
   };
@@ -137,33 +126,17 @@ function Admin({ firebase }) {
   return !adminBets ? (
     <Loader />
   ) : (
-    <Grid
-      container
-      direction="column"
-      justify="space-between"
-      alignItems="center"
-    >
+    <Grid container direction="column" justify="space-between" alignItems="center">
       {adminBets.length ? (
         <>
           <div className={classes.fabWrapper}>
-            <Fab
-              variant="round"
-              color="primary"
-              disabled={isSaving}
-              onClick={() => saveBets()}
-            >
+            <Fab variant="round" color="primary" disabled={isSaving} onClick={() => saveBets()}>
               <SaveIcon />
             </Fab>
-            {isSaving && (
-              <CircularProgress
-                className={classes.fabProgress}
-                size={68}
-                color={"secondary"}
-              />
-            )}
+            {isSaving && <CircularProgress className={classes.fabProgress} size={68} color={'secondary'} />}
           </div>
           <Grid item xs={12}>
-            <Typography variant={"h4"} style={{ marginBottom: "15px" }}>
+            <Typography variant={'h4'} style={{ marginBottom: '15px' }}>
               Tippa
             </Typography>
           </Grid>
@@ -171,11 +144,7 @@ function Admin({ firebase }) {
           {adminBets.map((bet, i) => {
             return (
               <Grid item>
-                <BetCard
-                  bet={bet}
-                  key={bet.kickoff + i}
-                  onChange={handleOnChange}
-                />
+                <BetCard bet={bet} key={bet.kickoff + i} onChange={handleOnChange} />
               </Grid>
             );
           })}

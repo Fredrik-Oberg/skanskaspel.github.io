@@ -1,4 +1,4 @@
-/* #firebaseui_container .firebaseui-title {
+/* /* #firebaseui_container .firebaseui-title {
   font-size: 0px;
 }
 .firebaseui-title:after {
@@ -7,8 +7,13 @@
 } */
 /* .firebaseui-label[for="ui-sign-in-email-input"] {
   font-size: 0px;
+} */
+/* .firebaseui-card-header > h1{
+  display:none
 }
-.firebaseui-label[for="ui-sign-in-email-input"]:after {
+.firebaseui-card-header > h1:after {
   font-size: 20px;
   content: "Logga in med epost";
-} */
+}  */
+
+/* #root > div > div:nth-child(1) > div > form > div.firebaseui-card-header > h1 */

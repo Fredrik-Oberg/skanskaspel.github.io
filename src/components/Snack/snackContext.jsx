@@ -1,7 +1,7 @@
-import React, { createContext, useState } from "react";
-import Snackbar from "@material-ui/core/Snackbar";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
+import React, { createContext, useState } from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 
 const Context = createContext();
 
@@ -10,26 +10,21 @@ function RenderSnack({ id, message, open, handleClose }) {
   return (
     <Snackbar
       anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "left",
+        vertical: 'bottom',
+        horizontal: 'left',
       }}
       open={open}
       autoHideDuration={6000}
       onClose={handleClose}
       ContentProps={{
-        "aria-describedby": messageId,
+        'aria-describedby': messageId,
       }}
       message={<span id={messageId}>{message}</span>}
       action={[
         <Button key="undo" color="secondary" size="small" onClick={handleClose}>
           UNDO
         </Button>,
-        <IconButton
-          key="close"
-          aria-label="Close"
-          color="inherit"
-          onClick={handleClose}
-        >
+        <IconButton key="close" aria-label="Close" color="inherit" onClick={handleClose}>
           X
         </IconButton>,
       ]}
@@ -74,9 +69,7 @@ export const SnackProvider = ({ children }) => {
 
   return (
     <Context.Provider value={{ createSnack }}>
-      {current && (
-        <RenderSnack key={current.id} {...current} handleClose={handleClose} />
-      )}
+      {current && <RenderSnack key={current.id} {...current} handleClose={handleClose} />}
       {children}
     </Context.Provider>
   );

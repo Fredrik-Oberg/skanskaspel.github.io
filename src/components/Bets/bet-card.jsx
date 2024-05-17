@@ -1,42 +1,35 @@
-import React from "react";
-import {
-  Card,
-  CardContent,
-  Box,
-  Grid,
-  makeStyles,
-  Typography,
-  Chip,
-} from "@material-ui/core";
-import moment from "../moment";
-import ResultInput from "./result-input";
+import React from 'react';
+import { Card, CardContent, Box, Grid, Typography, Chip } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import moment from '../moment';
+import ResultInput from './result-input';
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    width: "100%",
-    marginBottom: "25px",
+    width: '100%',
+    marginBottom: '25px',
   },
   cardContentRoot: {
-    "&:last-child": {
-      paddingBottom: "16px",
+    '&:last-child': {
+      paddingBottom: '16px',
     },
   },
   cardActionsRoot: {
-    paddingTop: "12px",
+    paddingTop: '12px',
   },
   cardContentItem: {
-    [theme.breakpoints.down("sm")]: {
-      width: "50%",
+    [theme.breakpoints.down('sm')]: {
+      width: '50%',
     },
-    width: "62%",
+    width: '62%',
   },
   resultInputXs: {
-    [theme.breakpoints.down("xs")]: {
-      padding: "0px!important",
+    [theme.breakpoints.down('xs')]: {
+      padding: '0px!important',
     },
   },
   kickoff: {
-    textTransform: "capitalize",
+    textTransform: 'capitalize',
   },
 }));
 
@@ -49,53 +42,40 @@ function BetCard({ bet, onChange, disableIfStarted }) {
     <Card
       variant="outlined"
       style={{
-        backgroundColor: bet.isFinished ? "rgb(241 241 241)" : "white",
+        backgroundColor: bet.isFinished ? 'rgb(241 241 241)' : 'white',
       }}
       className={classes.card}
     >
       {!bet.hasResult && (
         <CardContent spacing={4}>
-          <Box width={"100%"} textAlign="center">
+          <Box width={'100%'} textAlign="center">
             <Chip
               label="Tips saknas"
               color="primary"
               style={{
-                color: "#000",
-                backgroundColor: "#FCBF49",
+                color: '#000',
+                backgroundColor: '#FCBF49',
               }}
             />
           </Box>
         </CardContent>
       )}
       <CardContent className={classes.cardContentRoot}>
-        <Grid
-          container
-          direction="row"
-          justify="space-between"
-          alignItems="baseline"
-        >
+        <Grid container direction="row" justify="space-between" alignItems="baseline">
           <Grid item>
             <Typography variant="body1" component="div">
-              <span className={classes.kickoff}>
-                {kickoff.format("dddd DD/MM")}
-              </span>
+              <span className={classes.kickoff}>{kickoff.format('dddd DD/MM')}</span>
             </Typography>
           </Grid>
           <Grid item>
-            <Typography color="textSecondary" display={"inline"}>
+            <Typography color="textSecondary" display={'inline'}>
               <span>{translateGroup(bet)}</span>
             </Typography>
           </Grid>
         </Grid>
       </CardContent>
       <CardContent className={classes.cardActionsRoot}>
-        <Grid
-          container
-          direction="row"
-          justify="space-between"
-          alignItems="center"
-          spacing={2}
-        >
+        <Grid container direction="row" justify="space-between" alignItems="center" spacing={2}>
           <Grid item xs={5} className={classes.resultInputXs}>
             <ResultInput
               teamName={bet.home.team}
@@ -109,8 +89,8 @@ function BetCard({ bet, onChange, disableIfStarted }) {
             />
           </Grid>
           <Grid item xs={2} className={classes.resultInputXs}>
-            <Typography variant="body1" component="div" align={"center"}>
-              <span>{kickoff.format("HH:mm")}</span>
+            <Typography variant="body1" component="div" align={'center'}>
+              <span>{kickoff.format('HH:mm')}</span>
             </Typography>
           </Grid>
           <Grid item xs={5} className={classes.resultInputXs}>
@@ -132,23 +112,23 @@ function BetCard({ bet, onChange, disableIfStarted }) {
 
   function translateGroup(bet) {
     if (bet.group) {
-      return bet.group.replace("Group", "Grupp");
+      return bet.group.replace('Group', 'Grupp');
     }
     if (!bet.stage) {
-      return "-";
+      return '-';
     }
     const trimmed = bet.stage.trim();
     switch (trimmed) {
-      case "LAST_16":
-        return "Åttondelsfinal";
-      case "QUARTER_FINAL":
-        return "Kvartsfinal";
-      case "SEMI_FINAL":
-        return "Semifinal";
-      case "FINAL":
-        return "Final";
+      case 'LAST_16':
+        return 'Åttondelsfinal';
+      case 'QUARTER_FINAL':
+        return 'Kvartsfinal';
+      case 'SEMI_FINAL':
+        return 'Semifinal';
+      case 'FINAL':
+        return 'Final';
       default:
-        return "";
+        return '';
     }
   }
 }

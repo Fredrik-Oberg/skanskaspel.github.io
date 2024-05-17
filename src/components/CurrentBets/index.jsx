@@ -1,7 +1,7 @@
-import React from "react";
-import { Box, Button, Grid, Typography } from "@material-ui/core";
-import CurrentBetsCard from "./current-bets-card";
-import Loader from "../Loader";
+import React from 'react';
+import { Box, Button, Grid, Typography } from '@mui/material';
+import CurrentBetsCard from './current-bets-card';
+import Loader from '../Loader';
 
 function CurrentBets({ firebase }) {
   const [currentBets, setCurrentBets] = React.useState(null);
@@ -10,7 +10,7 @@ function CurrentBets({ firebase }) {
 
   React.useEffect(() => {
     async function getCurrentBets() {
-      const get = firebase.functions.httpsCallable("currentBets");
+      const get = firebase.functions.httpsCallable('currentBets');
       const res = await get({ onlyCurrent: true });
       setCurrentBets(res.data);
     }
@@ -19,7 +19,7 @@ function CurrentBets({ firebase }) {
 
   const fetchPastBets = React.useCallback(async () => {
     setLoadingPast(true);
-    const get = firebase.functions.httpsCallable("currentBets");
+    const get = firebase.functions.httpsCallable('currentBets');
     const res = await get({ onlyCurrent: false });
     setPastBets(res.data);
     setLoadingPast(false);
@@ -32,11 +32,8 @@ function CurrentBets({ firebase }) {
         <>
           {currentBets.length ? (
             <>
-              <Typography
-                variant={"h5"}
-                style={{ marginBottom: "15px", textAlign: "center" }}
-              >
-                {"Pågående matcher"}
+              <Typography variant={'h5'} style={{ marginBottom: '15px', textAlign: 'center' }}>
+                {'Pågående matcher'}
               </Typography>
               {currentBets
                 .sort((a, b) => (a.kickoff > b.kickoff ? -1 : 1))
@@ -45,22 +42,14 @@ function CurrentBets({ firebase }) {
                 ))}
             </>
           ) : (
-            <Typography
-              variant={"h5"}
-              style={{ marginBottom: "15px", textAlign: "center" }}
-            >
-              {"Inga pågående matcher"}
+            <Typography variant={'h5'} style={{ marginBottom: '15px', textAlign: 'center' }}>
+              {'Inga pågående matcher'}
             </Typography>
           )}
-          <Box mt={"25px"} mb={"15px"} textAlign="center">
+          <Box mt={'25px'} mb={'15px'} textAlign="center">
             {pastBets.length == 0 ? (
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={fetchPastBets}
-                disabled={loadingPast}
-              >
-                {"Ladda färdigspelade matcher"}
+              <Button variant="contained" color="secondary" onClick={fetchPastBets} disabled={loadingPast}>
+                {'Ladda färdigspelade matcher'}
               </Button>
             ) : (
               <></>
@@ -68,11 +57,8 @@ function CurrentBets({ firebase }) {
           </Box>
           {pastBets && pastBets.length ? (
             <>
-              <Typography
-                variant={"h5"}
-                style={{ marginBottom: "15px", textAlign: "center" }}
-              >
-                {"Färdigspelade matcher"}
+              <Typography variant={'h5'} style={{ marginBottom: '15px', textAlign: 'center' }}>
+                {'Färdigspelade matcher'}
               </Typography>
               {pastBets
                 .sort((a, b) => (a.kickoff > b.kickoff ? -1 : 1))
