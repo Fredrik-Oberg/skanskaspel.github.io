@@ -1,6 +1,6 @@
 import React from "react";
 import "firebase/auth";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import StyledFirebaseAuth from "./StyledFirebaseAuth";
 import { Box, Typography } from "@material-ui/core";
 import Loader from "../Loader";
 import "./auth.css";

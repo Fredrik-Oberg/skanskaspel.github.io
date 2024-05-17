@@ -24,19 +24,30 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "15px",
     width: "100%",
     [theme.breakpoints.down("xs")]: {
-      minWidth: "275px",
+      minWidth: "100%",
     },
   },
   cardHeaderDateTimeGridItem: {
     alignSelf: "flex-end",
   },
+  cardAction: {
+    [theme.breakpoints.down("xs")]: {
+      padding: 0,
+    },
+  },
   table: {
     width: "320px",
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+    },
   },
   tableBodyRowCell: {
     [theme.breakpoints.down("xs")]: {
       fontSize: "0.7rem",
     },
+  },
+  kickoff: {
+    textTransform: "capitalize",
   },
 }));
 
@@ -54,17 +65,38 @@ const Country = ({ teamName }) => {
 function CurrentBetsCard({ bets }) {
   const kickoff = moment(bets.kickoff);
   const classes = useStyles();
-  bets.usersBet.sort((a, b) => {
-    var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-    var nameB = b.name.toUpperCase(); // ignore upper and lowercase
-    if (nameA < nameB) {
-      return -1;
-    }
-    if (nameA > nameB) {
-      return 1;
-    }
-    return 0;
-  });
+  bets.usersBet
+    .sort((a, b) => {
+      var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+      var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    })
+    .sort((a, b) => {
+      if (a.homeResult == null) {
+        return -1;
+      }
+      // sort on first home res then away res
+      const aRes = parseInt(a.homeResult, 10);
+      const bRes = parseInt(b.homeResult, 10);
+      const aaRes = parseInt(a.awayResult, 10);
+      const baRes = parseInt(b.awayResult, 10);
+      return bRes > aRes
+        ? 1
+        : bRes < aRes
+        ? -1
+        : baRes > aaRes
+        ? 1
+        : baRes < aaRes
+        ? -1
+        : 0;
+    });
+
   return (
     <Card variant="outlined" className={classes.root}>
       <CardContent>
@@ -92,14 +124,16 @@ function CurrentBetsCard({ bets }) {
           </Grid>
           <Grid item className={classes.cardHeaderDateTimeGridItem}>
             <Typography variant="body1" component="div">
-              <span>{`${kickoff.format("dddd DD/MM")}`}</span>
+              <span className={classes.kickoff}>{`${kickoff.format(
+                "dddd DD/MM"
+              )}`}</span>
             </Typography>
             <Typography variant="body1" component="div" align="center">
               <span>{`${kickoff.format("HH:mm")}`}</span>
             </Typography>
           </Grid>
         </Grid>
-        <CardActions>
+        <CardActions className={classes.cardAction}>
           <Grid
             container
             direction="column"

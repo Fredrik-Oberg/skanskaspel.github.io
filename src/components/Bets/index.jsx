@@ -1,45 +1,75 @@
 import React from "react";
 import moment from "moment";
 
-import { Fab, Grid, Typography } from "@material-ui/core";
+import {
+  CircularProgress,
+  Fab,
+  Grid,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import { useSnackbar } from "material-ui-snackbar-provider";
 
 import BetCard from "./bet-card";
 import Loader from "../Loader";
+import SaveIcon from "@material-ui/icons/Save";
+
+const useStyles = makeStyles((theme) => ({
+  fabWrapper: {
+    margin: 0,
+    top: "auto",
+    right: 20,
+    bottom: 20,
+    left: "auto",
+    position: "fixed",
+  },
+  fabProgress: {
+    color: "secondary",
+    position: "absolute",
+    top: -6,
+    left: -6,
+    zIndex: 1,
+  },
+}));
 
 const extendBetResult = (res) =>
   res.data
     .map((bet) => {
-      // Add isFinished and hasResult
+      // Add isFinished, hasStarted and hasResult
       const kickoff = moment(bet.kickoff);
-      const isFinished = moment().add("3", "hours").isAfter(kickoff);
+      const now = moment().unix() * 1000;
+      const betAdded3h = kickoff.add(3, "hours").unix() * 1000;
+
+      const hasStarted = bet.kickoff <= now;
+      const isFinished = betAdded3h < now;
       const hasResult = bet.home.result !== null && bet.away.result !== null;
-      return { ...bet, isFinished, hasResult };
+      return { ...bet, isFinished, hasStarted, hasResult };
     })
-    // Sort on kickoff then on is finished
-    .sort((a, b) => moment.utc(a.kickoff).diff(moment.utc(b.kickoff)))
-    .sort((a, b) =>
-      b.isFinished === a.isFinished ? 0 : b.isFinished ? -1 : 1
-    );
+    // Sort on kickoff
+    .sort((a, b) => a.kickoff - b.kickoff);
 
 function Bets({ firebase }) {
   const [bets, setBets] = React.useState(null);
+  const [isSaving, setIsSaving] = React.useState(false);
   const [originalBets, setOriginalBets] = React.useState(null);
   const snackbar = useSnackbar();
+  const classes = useStyles();
 
   React.useEffect(() => {
     async function getBets() {
+      debugger
       const get = firebase.functions.httpsCallable("bets");
       const res = await get();
       const data = extendBetResult(res);
       setBets(data);
+      // Deep copy
       setOriginalBets(JSON.parse(JSON.stringify(data)));
     }
     getBets();
   }, [firebase.functions]);
 
   const saveBets = () => {
-    console.log(bets);
+    setIsSaving(true);
     const isPristine = (bet) => {
       const originalBet = originalBets.find(
         (x) =>
@@ -56,10 +86,16 @@ function Bets({ firebase }) {
     // If one result is set other is null then we set 0
     const changedBets = bets
       .map((x) => {
-        if (x.home.result != null && x.away.result == null) {
+        if (
+          x.home.result != null &&
+          (x.away.result == null || x.away.result === "")
+        ) {
           return { ...x, away: { ...x.away, result: 0 } };
         }
-        if (x.home.result == null && x.away.result != null) {
+        if (
+          x.away.result != null &&
+          (x.home.result == null || x.home.result === "")
+        ) {
           return { ...x, home: { ...x.home, result: 0 } };
         }
         return x;
@@ -73,6 +109,7 @@ function Bets({ firebase }) {
       }
     });
     if (changedBets.length == 0) {
+      setIsSaving(false);
       return;
     }
     // TODO check for error
@@ -82,11 +119,13 @@ function Bets({ firebase }) {
         const data = extendBetResult(res);
         setBets(data);
         snackbar.showMessage("Spel sparat");
+        setIsSaving(false);
       })
       .catch((error) => {
         console.error("onRejected function called: " + error.message);
         //TODO should be error color
         snackbar.showMessage("Misslyckades med att spara");
+        setIsSaving(false);
       });
   };
   const handleOnChange = (val) => {
@@ -94,6 +133,7 @@ function Bets({ firebase }) {
     bet = val;
     setBets(bets);
   };
+
   return (
     <Grid item zeroMinWidth>
       {!bets ? (
@@ -107,32 +147,58 @@ function Bets({ firebase }) {
         >
           {bets.length ? (
             <>
-              <Fab
-                style={{
-                  margin: 0,
-                  top: "auto",
-                  right: 20,
-                  bottom: 20,
-                  left: "auto",
-                  position: "fixed",
-                }}
-                variant="contained"
-                color="primary"
-                onClick={() => saveBets()}
-              >
-                Spara
-              </Fab>
-              {bets.filter((x) => !x.isFinished).length != 0 && (
+              <div className={classes.fabWrapper}>
+                <Fab
+                  variant="round"
+                  color="primary"
+                  disabled={isSaving}
+                  onClick={() => saveBets()}
+                >
+                  <SaveIcon />
+                </Fab>
+                {isSaving && (
+                  <CircularProgress
+                    className={classes.fabProgress}
+                    size={68}
+                    color={"secondary"}
+                  />
+                )}
+              </div>
+              {bets.filter((x) => x.hasStarted && !x.isFinished).length !=
+                0 && (
                 <Grid item xs={12}>
-                  <Typography variant={"h4"} style={{ marginBottom: "15px" }}>
-                    Tippa
+                  <Typography variant={"h5"} style={{ marginBottom: "15px" }}>
+                    {"Pågående"}
                   </Typography>
                 </Grid>
               )}
+              {bets
+                .map((bet, i) => {
+                  if (bet.hasStarted && !bet.isFinished) {
+                    return (
+                      <Grid>
+                        <BetCard
+                          disableIfStarted
+                          bet={bet}
+                          key={bet.kickoff + i + bet.hasResult}
+                          onChange={() => {}}
+                        />
+                      </Grid>
+                    );
+                  }
+                  return false;
+                })
+                .filter(Boolean)}
+              {/* TODO issue när alla matcher har startat */}
+              <Grid item xs={12}>
+                <Typography variant={"h5"} style={{ marginBottom: "15px" }}>
+                  Tippa
+                </Typography>
+              </Grid>
 
               {bets
                 .map((bet, i) => {
-                  if (bet.isFinished) return false;
+                  if (bet.isFinished || bet.hasStarted) return false;
                   return (
                     <Grid>
                       <BetCard
@@ -145,26 +211,29 @@ function Bets({ firebase }) {
                   );
                 })
                 .filter(Boolean)}
+
               {bets.filter((x) => x.isFinished).length != 0 && (
                 <Grid item xs={12}>
-                  <Typography variant={"h4"} style={{ marginBottom: "15px" }}>
-                    Startade matcher
+                  <Typography variant={"h5"} style={{ marginBottom: "15px" }}>
+                    {"Färdigspelade"}
                   </Typography>
                 </Grid>
               )}
               {bets
                 .map((bet, i) => {
-                  if (!bet.isFinished) return false;
-                  return (
-                    <Grid>
-                      <BetCard
-                        disableIfStarted
-                        bet={bet}
-                        key={bet.kickoff + i + bet.hasResult}
-                        onChange={() => {}}
-                      />
-                    </Grid>
-                  );
+                  if (bet.isFinished) {
+                    return (
+                      <Grid>
+                        <BetCard
+                          disableIfStarted
+                          bet={bet}
+                          key={bet.kickoff + i + bet.hasResult}
+                          onChange={() => {}}
+                        />
+                      </Grid>
+                    );
+                  }
+                  return false;
                 })
                 .filter(Boolean)}
             </>

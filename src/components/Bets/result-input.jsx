@@ -9,7 +9,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ResultInput = ({ onChangeResult, initialValue, disabled, teamName }) => {
+const ResultInput = ({
+  onChangeResult,
+  initialValue,
+  disabled,
+  teamName,
+  isHomeTeam,
+}) => {
   const [value, setValue] = React.useState(initialValue);
   React.useEffect(() => {
     onChangeResult && onChangeResult(value);
@@ -18,26 +24,38 @@ const ResultInput = ({ onChangeResult, initialValue, disabled, teamName }) => {
 
   const country = (teamName || "").replace(" ", "_");
   const seName = countryNamesSe[country];
-  return (
-    <TextField
-      className={classes.root}
-      id="outlined-basic"
-      label={seName}
-      variant="outlined"
-      value={value != null ? value : 0}
-      disabled={disabled}
-      type="number"
-      min={0}
-      onChange={(event) => setValue(event.target.value)}
-      InputProps={{
-        inputProps: {
-          min: 0,
-        },
+  const inputPosition = isHomeTeam
+    ? {
         startAdornment: (
           <InputAdornment position="start">
             <FlagIcon country={country} />
           </InputAdornment>
         ),
+      }
+    : {
+        endAdornment: (
+          <InputAdornment position="end">
+            <FlagIcon country={country} />
+          </InputAdornment>
+        ),
+      };
+  return (
+    <TextField
+      className={classes.root}
+      label={seName}
+      variant="outlined"
+      value={value}
+      placeholder={0}
+      disabled={disabled}
+      type="number"
+      onChange={(event) => setValue(event.target.value)}
+      InputLabelProps={{ shrink: true }}
+      InputProps={{
+        inputProps: {
+          style: !isHomeTeam ? { textAlign: "right" } : {},
+          min: 0,
+        },
+        ...inputPosition,
       }}
     />
   );

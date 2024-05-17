@@ -6,10 +6,10 @@ import Home from "./Home";
 import { FirebaseContext } from "./components/Firebase";
 import Authentication from "./components/Authentication";
 
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { createTheme,  ThemeProvider } from "@material-ui/core/styles";
 import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
 
-const createTheme = () => {
+const createAppTheme = () => {
   const breakpoints = createBreakpoints({});
   const options = {
     palette: {
@@ -31,7 +31,7 @@ const createTheme = () => {
     },
   };
 
-  return createMuiTheme(options);
+  return createTheme(options);
 };
 
 function App() {
@@ -43,7 +43,7 @@ function App() {
     <FirebaseContext.Consumer>
       {(firebase) => {
         return (
-          <ThemeProvider theme={createTheme()}>
+          <ThemeProvider theme={createAppTheme()}>
             {!isSignedIn ? (
               <>
                 <Header />

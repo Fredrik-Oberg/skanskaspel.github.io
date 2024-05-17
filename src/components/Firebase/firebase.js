@@ -1,8 +1,11 @@
-import app from "firebase/app";
-import "firebase/auth";
-import "firebase/functions";
-import "firebase/storage";
+import app from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/functions";
+import "firebase/compat/firestore";
+import "firebase/compat/performance";
+import "firebase/compat/remote-config";
 
+import { emulateFirebase } from "./local-dev";
 const config = {
   apiKey: "AIzaSyBAJqLiR_0up73A5ewidTHHg8k8nU1s1BI",
   authDomain: "skanskaspel-7f6dd.firebaseapp.com",
@@ -16,9 +19,14 @@ const config = {
 class Firebase {
   constructor() {
     app.initializeApp(config);
+    const remoteConfig = app.remoteConfig();
+
+    this.perf = app.performance();
     this.auth = app.auth();
+    this.firestore = app.firestore();
     this.functions = app.app().functions("europe-west3");
-    this.storage = app.app().storage();
+
+    // this.storage = app.app().storage();
     this.uiConfig = {
       // Popup signin flow rather than redirect flow.
       signInFlow: "popup",
@@ -41,8 +49,9 @@ class Firebase {
     // };
 
     if (process.env.NODE_ENV === "development") {
-      this.auth.useEmulator("http://localhost:9099");
-      this.functions.useEmulator("localhost", 5001);
+      this.firestore.useEmulator("http://127.0.0.1", 8080);
+      this.auth.useEmulator("http://127.0.0.1:9099");
+      this.functions.useEmulator("127.0.0.1", 5001);
     }
   }
 }

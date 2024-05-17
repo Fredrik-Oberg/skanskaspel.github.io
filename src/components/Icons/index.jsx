@@ -52,7 +52,7 @@ const countryFlags = {
   Ukraine,
   Wales,
 };
-const FlagIcon = ({ country }) => {
+const FlagIcon = ({ country, small }) => {
   const Country = countryFlags[country];
   const showBorder = ["Russia", "Poland", "Czech_Republic"].includes(country);
   return (
@@ -60,7 +60,7 @@ const FlagIcon = ({ country }) => {
       src={Country}
       alt={`${country}`}
       style={{
-        height: "25px",
+        height: small ? "10px" : "25px",
         paddingTop: "2px",
         maxWidth: "40px",
         // ...(showBorder ? { border: "1px solid #80808036" } : {}),

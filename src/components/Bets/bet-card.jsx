@@ -12,6 +12,10 @@ import moment from "../moment";
 import ResultInput from "./result-input";
 
 const useStyles = makeStyles((theme) => ({
+  card: {
+    width: "100%",
+    marginBottom: "25px",
+  },
   cardContentRoot: {
     "&:last-child": {
       paddingBottom: "16px",
@@ -26,6 +30,14 @@ const useStyles = makeStyles((theme) => ({
     },
     width: "62%",
   },
+  resultInputXs: {
+    [theme.breakpoints.down("xs")]: {
+      padding: "0px!important",
+    },
+  },
+  kickoff: {
+    textTransform: "capitalize",
+  },
 }));
 
 function BetCard({ bet, onChange, disableIfStarted }) {
@@ -37,10 +49,9 @@ function BetCard({ bet, onChange, disableIfStarted }) {
     <Card
       variant="outlined"
       style={{
-        marginBottom: "15px",
-        backgroundColor: bet.isFinished ? "rgb(241 241 241)" : "initial",
-        width: "373px",
+        backgroundColor: bet.isFinished ? "rgb(241 241 241)" : "white",
       }}
+      className={classes.card}
     >
       {!bet.hasResult && (
         <CardContent spacing={4}>
@@ -65,16 +76,14 @@ function BetCard({ bet, onChange, disableIfStarted }) {
         >
           <Grid item>
             <Typography variant="body1" component="div">
-              <span>{kickoff.format("dddd DD/MM")}</span>
+              <span className={classes.kickoff}>
+                {kickoff.format("dddd DD/MM")}
+              </span>
             </Typography>
           </Grid>
           <Grid item>
             <Typography color="textSecondary" display={"inline"}>
-              {bet.group ? (
-                <span>{bet.group.replace("Group", "Grupp")}</span>
-              ) : (
-                <span>{bet.stage}</span>
-              )}
+              <span>{translateGroup(bet)}</span>
             </Typography>
           </Grid>
         </Grid>
@@ -87,7 +96,7 @@ function BetCard({ bet, onChange, disableIfStarted }) {
           alignItems="center"
           spacing={2}
         >
-          <Grid item xs={5}>
+          <Grid item xs={5} className={classes.resultInputXs}>
             <ResultInput
               teamName={bet.home.team}
               onChangeResult={(val) => {
@@ -96,14 +105,15 @@ function BetCard({ bet, onChange, disableIfStarted }) {
               }}
               initialValue={bet.home.result}
               disabled={disabled}
+              isHomeTeam
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={2} className={classes.resultInputXs}>
             <Typography variant="body1" component="div" align={"center"}>
               <span>{kickoff.format("HH:mm")}</span>
             </Typography>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={5} className={classes.resultInputXs}>
             <ResultInput
               teamName={bet.away.team}
               onChangeResult={(val) => {
@@ -112,12 +122,35 @@ function BetCard({ bet, onChange, disableIfStarted }) {
               }}
               initialValue={bet.away.result}
               disabled={disabled}
+              isHomeTeam={false}
             />
           </Grid>
         </Grid>
       </CardContent>
     </Card>
   );
+
+  function translateGroup(bet) {
+    if (bet.group) {
+      return bet.group.replace("Group", "Grupp");
+    }
+    if (!bet.stage) {
+      return "-";
+    }
+    const trimmed = bet.stage.trim();
+    switch (trimmed) {
+      case "LAST_16":
+        return "Åttondelsfinal";
+      case "QUARTER_FINAL":
+        return "Kvartsfinal";
+      case "SEMI_FINAL":
+        return "Semifinal";
+      case "FINAL":
+        return "Final";
+      default:
+        return "";
+    }
+  }
 }
 
 export default BetCard;

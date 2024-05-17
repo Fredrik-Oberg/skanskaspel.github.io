@@ -3,29 +3,62 @@ import moment from "moment";
 
 import Loader from "../Loader";
 import BetCard from "../Bets/bet-card";
-import { Button, Fab, Grid, Typography } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  Fab,
+  Grid,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import SaveIcon from "@material-ui/icons/Save";
+
 import { useSnackbar } from "material-ui-snackbar-provider";
+
+const useStyles = makeStyles((theme) => ({
+  fabWrapper: {
+    margin: 0,
+    top: "auto",
+    right: 20,
+    bottom: 20,
+    left: "auto",
+    position: "fixed",
+  },
+  fabProgress: {
+    color: "secondary",
+    position: "absolute",
+    top: -6,
+    left: -6,
+    zIndex: 1,
+  },
+}));
 
 const extendBetResult = (res) =>
   res.data
     .map((bet) => {
-      // Add isFinished and hasResult
+      // Add isFinished, hasStarted and hasResult
       const kickoff = moment(bet.kickoff);
-      const isFinished = moment().add("105", "minutes").isAfter(kickoff);
+      const now = moment().unix() * 1000;
+      const betAdded105m = kickoff.add("105", "minutes").unix() * 1000;
+
+      const hasStarted = bet.kickoff <= now;
+      const isFinished = betAdded105m < now;
       const hasResult = bet.home.result !== null && bet.away.result !== null;
-      return { ...bet, isFinished, hasResult };
+      return { ...bet, isFinished, hasStarted, hasResult };
     })
+    .sort((a, b) => a.kickoff - b.kickoff)
     // Sort on kickoff then on is finished
-    .sort((a, b) => moment.utc(a.kickoff).diff(moment.utc(b.kickoff)))
     .sort((a, b) => (b.isFinished === a.isFinished ? 0 : b.isFinished ? 1 : -1))
     .sort((a, b) => (b.hasResult === a.hasResult ? 0 : b.hasResult ? -1 : 1));
 
 function Admin({ firebase }) {
   const [adminBets, setAdminBets] = React.useState(null);
+  const [isSaving, setIsSaving] = React.useState(false);
+
   const [originalBets, setOriginalBets] = React.useState(null);
 
   const snackbar = useSnackbar();
-
+  const classes = useStyles();
   React.useEffect(() => {
     async function getAdmin() {
       const get = firebase.functions.httpsCallable("admin");
@@ -35,15 +68,13 @@ function Admin({ firebase }) {
       setAdminBets(data);
       setOriginalBets(JSON.parse(JSON.stringify(data)));
     }
-    async function getResults() {
-      const get = firebase.functions.httpsCallable("ressssss");
-      const res = await get();
-      console.log(res);
-    }
+
     getAdmin();
   }, [firebase.functions]);
 
   const saveBets = () => {
+    setIsSaving(true);
+
     const isPristine = (bet) => {
       const originalBet = originalBets.find(
         (x) =>
@@ -78,6 +109,8 @@ function Admin({ firebase }) {
       }
     });
     if (filteredBets.length == 0) {
+      setIsSaving(false);
+
       return;
     }
     const saveResults = firebase.functions.httpsCallable("saveResults");
@@ -87,10 +120,12 @@ function Admin({ firebase }) {
         const data = extendBetResult(res);
         setAdminBets(data);
         snackbar.showMessage("Resultat sparat");
+        setIsSaving(false);
       })
       .catch((error) => {
         console.error("onRejected function called: " + error.message);
         snackbar.showMessage("Misslyckades med att spara");
+        setIsSaving(false);
       });
   };
   const handleOnChange = (val) => {
@@ -110,21 +145,23 @@ function Admin({ firebase }) {
     >
       {adminBets.length ? (
         <>
-          <Fab
-            style={{
-              margin: 0,
-              top: "auto",
-              right: 20,
-              bottom: 20,
-              left: "auto",
-              position: "fixed",
-            }}
-            variant="contained"
-            color="primary"
-            onClick={() => saveBets()}
-          >
-            Spara
-          </Fab>
+          <div className={classes.fabWrapper}>
+            <Fab
+              variant="round"
+              color="primary"
+              disabled={isSaving}
+              onClick={() => saveBets()}
+            >
+              <SaveIcon />
+            </Fab>
+            {isSaving && (
+              <CircularProgress
+                className={classes.fabProgress}
+                size={68}
+                color={"secondary"}
+              />
+            )}
+          </div>
           <Grid item xs={12}>
             <Typography variant={"h4"} style={{ marginBottom: "15px" }}>
               Tippa
