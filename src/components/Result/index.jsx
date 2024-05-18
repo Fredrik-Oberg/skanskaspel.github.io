@@ -191,17 +191,7 @@ function Row({ row, i }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {(row.matches || [{
-                    kickoff: "",
-                    teams: {
-                      home: "Georgia",
-                      away: "Serbia"
-                    },
-                    bet:{
-                      
-                    },
-                    result: {}
-                  }]).map((historyRow) => (
+                  {(row.matches || []).map((historyRow) => (
                     <TableRow key={historyRow.kickoff + historyRow.teams.home}>
                       <TableCell className={classes.smallCell} component="th" scope="row">
                         {/* <FlagIcon country={getCountry(historyRow.teams.home)} small /> */}
