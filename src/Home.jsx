@@ -78,23 +78,25 @@ function Home({ firebase }) {
           value={value}
           onChange={handleChange}
           aria-label="tabs panel"
-          // style={{ backgroundColor: "#F4A261" }}
+          style={{ backgroundColor: "#D62828" }}
           variant="scrollable"
           scrollButtons="auto"
-          TabIndicatorProps={{ style: { background: '#f7dd16' } }}
+          indicatorColor="secondary"
+          textColor='inherit'
+          
+          TabIndicatorProps={{  background: '#f7dd16'  }}
         >
           <Tab label="Tippa" {...a11yProps(0)} />
           <Tab label="Matcher" {...a11yProps(1)} />
           <Tab label="Tabell" {...a11yProps(2)} />
-          <Tab label="Thrash talk" {...a11yProps(3)} />
           <Tab label="Regler" {...a11yProps(4)} />
           <Tab label="Mina inställningar" {...a11yProps(5)} />
           {isAdmin && <Tab label="Admin" {...a11yProps(6)} />}
           {isAdmin && <Tab label="Test-Area" {...a11yProps(7)} />}
         </Tabs>
       </AppBar>
-
-      <TabPanel value={value} index={0}>
+    
+      <TabPanel  value={value} index={0}>
         <Grid container direction="column" justify="center" alignItems="center">
           <Bets firebase={firebase} />
         </Grid>
@@ -109,28 +111,28 @@ function Home({ firebase }) {
           <Result firebase={firebase} />
         </Grid>
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      {/* <TabPanel value={value} index={3}>
         <Grid container direction="column" justify="center" alignItems="center">
           <Thrashtalk firebase={firebase} />
         </Grid>
-      </TabPanel>
-      <TabPanel value={value} index={4}>
+      </TabPanel> */}
+      <TabPanel value={value} index={3}>
         <Grid container direction="column" justify="center" alignItems="center">
           <Rules />
         </Grid>
       </TabPanel>
-      <TabPanel value={value} index={5}>
+      <TabPanel value={value} index={4}>
         <Grid container direction="column" justify="center" alignItems="center">
           <UserProfile firebase={firebase} />
         </Grid>
       </TabPanel>
       {isAdmin && (
-        <TabPanel value={value} index={6}>
+        <TabPanel value={value} index={5}>
           <Admin firebase={firebase} />
         </TabPanel>
       )}
       {isAdmin && (
-        <TabPanel value={value} index={7}>
+        <TabPanel value={value} index={6}>
           <Grid container direction="column" justify="center" alignItems="center">
             <TestArea firebase={firebase} />
           </Grid>

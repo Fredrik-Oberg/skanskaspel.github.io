@@ -136,7 +136,7 @@ function Admin({ firebase }) {
             {isSaving && <CircularProgress className={classes.fabProgress} size={68} color={'secondary'} />}
           </div>
           <Grid item xs={12}>
-            <Typography variant={'h4'} style={{ marginBottom: '15px' }}>
+            <Typography variant={'h6'} style={{ marginBottom: '10px' }}>
               Tippa
             </Typography>
           </Grid>

@@ -17,6 +17,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import Loader from '../Loader';
 import FlagIcon from '../Icons';
+import { getCountryName } from '../../country-names.se';
 
 const useStyles = makeStyles({
   table: {
@@ -143,6 +144,8 @@ function Row({ row, i }) {
 
     row.matches.sort((a, b) => b.kickoff - a.kickoff);
     console.log(row.matches);
+  }else{
+    
   }
   return (
     <>
@@ -188,14 +191,32 @@ function Row({ row, i }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {(row.matches || []).map((historyRow) => (
+                  {(row.matches || [{
+                    kickoff: "",
+                    teams: {
+                      home: "Georgia",
+                      away: "Serbia"
+                    },
+                    bet:{
+                      
+                    },
+                    result: {}
+                  }]).map((historyRow) => (
                     <TableRow key={historyRow.kickoff + historyRow.teams.home}>
                       <TableCell className={classes.smallCell} component="th" scope="row">
-                        <FlagIcon country={getCountry(historyRow.teams.home)} small />
+                        {/* <FlagIcon country={getCountry(historyRow.teams.home)} small /> */}
                         <Typography variant="body2" style={{ fontSize: '8px' }} display="block">
-                          {'VS'}
+                          {getCountryName(historyRow.teams.home)}
                         </Typography>
-                        <FlagIcon country={getCountry(historyRow.teams.away)} small />
+                        <Typography variant="body2" style={{ fontSize: '8px' }} display="block">
+                          {/* {'VS'} */}
+                          {'-'}
+                          </Typography>
+                        <Typography variant="body2" style={{ fontSize: '8px' }} display="block">
+                        {/* <FlagIcon country={getCountry(historyRow.teams.away)} small /> */}
+                        {getCountryName(historyRow.teams.away)}
+
+                        </Typography>
                       </TableCell>
                       <TableCell className={`${classes.smallCell} ${classes.kickoff}`}>
                         <Typography variant="body2" style={{ fontSize: '10px' }} display="block">

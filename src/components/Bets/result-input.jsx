@@ -2,7 +2,7 @@ import React from 'react';
 import { InputAdornment, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import FlagIcon from '../Icons';
-import { countryNamesSe } from '../../country-names.se';
+import { getCountryName } from '../../country-names.se';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,7 +18,7 @@ const ResultInput = ({ onChangeResult, initialValue, disabled, teamName, isHomeT
   const classes = useStyles();
 
   const country = (teamName || '').replace(' ', '_');
-  const seName = countryNamesSe[country];
+  const seName = getCountryName(country)
   const inputPosition = isHomeTeam
     ? {
         startAdornment: (

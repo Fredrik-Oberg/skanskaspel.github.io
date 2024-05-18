@@ -64,7 +64,7 @@ function Bets({ firebase }) {
       }
     }
     getBets();
-  }, [firebase.functions]);
+  }, [firebase.functions, snackbar]);
 
   const saveBets = () => {
     setIsSaving(true);
@@ -131,7 +131,8 @@ function Bets({ firebase }) {
             <>
               <div className={classes.fabWrapper}>
                 <Fab variant="round" color="primary" disabled={isSaving} onClick={() => saveBets()}>
-                  <SaveIcon />
+                  {/* <SaveIcon /> */}
+                  <Typography>Spara</Typography>
                 </Fab>
                 {isSaving && <CircularProgress className={classes.fabProgress} size={68} color={'secondary'} />}
               </div>
@@ -156,7 +157,7 @@ function Bets({ firebase }) {
                 .filter(Boolean)}
               {/* TODO issue när alla matcher har startat */}
               <Grid item xs={12}>
-                <Typography variant={'h5'} style={{ marginBottom: '15px' }}>
+                <Typography variant={'h6'} style={{ marginBottom: '15px' }}>
                   Tippa
                 </Typography>
               </Grid>

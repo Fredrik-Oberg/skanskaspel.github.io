@@ -7,7 +7,7 @@ import ResultInput from './result-input';
 const useStyles = makeStyles((theme) => ({
   card: {
     width: '100%',
-    marginBottom: '25px',
+    marginBottom: '10px',
   },
   cardContentRoot: {
     '&:last-child': {
@@ -46,8 +46,8 @@ function BetCard({ bet, onChange, disableIfStarted }) {
       }}
       className={classes.card}
     >
-      {!bet.hasResult && (
-        <CardContent spacing={4}>
+      {/* {!bet.hasResult && (
+        <CardContent  marginBottom={2}>
           <Box width={'100%'} textAlign="center">
             <Chip
               label="Tips saknas"
@@ -59,18 +59,27 @@ function BetCard({ bet, onChange, disableIfStarted }) {
             />
           </Box>
         </CardContent>
-      )}
+      )} */}
       <CardContent className={classes.cardContentRoot}>
-        <Grid container direction="row" justify="space-between" alignItems="baseline">
+        <Grid container direction="row" justifyContent="space-between" alignItems="baseline">
           <Grid item>
             <Typography variant="body1" component="div">
               <span className={classes.kickoff}>{kickoff.format('dddd DD/MM')}</span>
             </Typography>
           </Grid>
           <Grid item>
-            <Typography color="textSecondary" display={'inline'}>
+          {!bet.hasResult && (<Chip 
+              label="Tips saknas"
+              color="primary"
+              style={{
+                color: '#000',
+                backgroundColor: '#FCBF49',
+              }}
+            />)}
+            {/* <Typography color="textSecondary" display={'inline'}>
               <span>{translateGroup(bet)}</span>
-            </Typography>
+            </Typography> */}
+        
           </Grid>
         </Grid>
       </CardContent>

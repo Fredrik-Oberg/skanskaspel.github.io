@@ -8,7 +8,7 @@ function Header() {
     <header className="App-header">
       <Typography variant="h3" align="center">
         <SvgIcon component={Skane} />
-        {'Skånskaspel '}
+        {'Skånska Spel'}
         <SvgIcon component={Skane} />
       </Typography>
     </header>

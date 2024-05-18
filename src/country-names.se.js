@@ -23,6 +23,11 @@ export const countryNamesSe = {
   Turkey: "Turkiet",
   Ukraine: "Ukraina",
   Wales: "Wales",
+  Romania: "Rumänien",
+  Serbia: "Serbien",
+  Slovenia: "Slovenien",
+  Albania: "Albanien",
+  Georgia: "Georgien"
 };
 export const countryNamesShortSe = {
   Austria: "AUT",
@@ -50,3 +55,8 @@ export const countryNamesShortSe = {
   Ukraine: "UKR",
   Wales: "WAL",
 };
+
+export const getCountryName = (name) => {
+  const country = (name || '').replace(' ', '_');
+  return countryNamesSe[country];
+}

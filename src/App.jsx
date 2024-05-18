@@ -6,12 +6,16 @@ import Home from './Home';
 import { FirebaseContext } from './components/Firebase';
 import Authentication from './components/Authentication';
 
-import { createTheme, ThemeProvider, breakpoints } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const createAppTheme = () => {
   const theme = createTheme();
   const options = {
     palette: {
+      background: {
+        default:"white",
+        paper: "white"
+      },
       type: 'light',
       primary: {
         main: '#D62828',
