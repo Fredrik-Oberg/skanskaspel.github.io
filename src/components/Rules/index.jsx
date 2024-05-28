@@ -18,7 +18,9 @@ function Rules() {
       <Text text="✅ Fyll i resultaten under fliken ”Tippa”. Du kan fylla i och ändra ditt tipp fram till avspark." />
 
       <Text text="✅ GLÖM INTE trycka på ”Spara” när du fyllt i. Har du ej fyllt i eller glömt att spara blir det 0 poäng." />
-
+      
+      <Text text="✅ Varje dag klockan 12.00 får du ett mail ifall du har otippade matcher (håll koll i skräpposten också)." />
+        
       <Text text="✅ Under ”Pågående matcher” ser du vad alla andra har tippat när matchen börjat spelas." />
 
       <Text text="✅ Under ”Tabell” kan du se aktuell ställning i tippet." />

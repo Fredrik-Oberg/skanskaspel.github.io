@@ -49,7 +49,7 @@ export default function Auth({ firebase, children }) {
 
   const authContext = React.useMemo(
     () => ({
-      signIn: async (data) => {
+      signIn: async () => {
         // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `SecureStore`
@@ -64,7 +64,8 @@ export default function Auth({ firebase, children }) {
 
   return (
     <AuthContext.Provider value={authContext}>
-      {state.isSignedIn == false ? <Authentication firebase={firebase}></Authentication> : { children }}
+      {/* eslint-disable-next-line react/jsx-no-undef */}
+      {state.isSignedIn === false ? <Authentication firebase={firebase}></Authentication> : { children }}
     </AuthContext.Provider>
   );
 }

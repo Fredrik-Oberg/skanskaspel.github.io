@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import * as firebaseui from 'firebaseui';
@@ -41,7 +41,7 @@ const StyledFirebaseAuth = ({ uiConfig, firebaseAuth, className, uiCallback }) =
       unregisterAuthObserver();
       firebaseUiWidget.reset();
     };
-  }, [firebaseui, uiConfig, firebaseAuth, userSignedIn, uiCallback]);
+  }, [uiConfig, firebaseAuth, userSignedIn, uiCallback]);
 
   return <div className={className} ref={elementRef} />;
 };

@@ -43,7 +43,7 @@ function Authentication(props) {
     <Loader />
   ) : !isSignedIn ? (
     <Box>
-      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth} uiCallback={(...args) => {}} />
+      <StyledFirebaseAuth uiConfig={firebase.uiConfig} firebaseAuth={firebase.auth} uiCallback={(...args) => {}} />
 
       {!waitingForEmailConfirmation ? (
         <Box

@@ -9,7 +9,7 @@ function Header() {
       <Typography variant="h3" align="center">
         <SvgIcon component={Skane} />
         {'Skånska Spel'}
-        <SvgIcon component={Skane} />
+        <SvgIcon style={{"marginLeft": "5px"}} component={Skane} />
       </Typography>
     </header>
   );

@@ -9,14 +9,12 @@ import {
   TableHead,
   TableRow,
   Paper,
-  useTheme,
   Collapse,
   Box,
   Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Loader from '../Loader';
-import FlagIcon from '../Icons';
 import { getCountryName } from '../../country-names.se';
 
 const useStyles = makeStyles({
@@ -46,7 +44,6 @@ const useStyles = makeStyles({
 
 function Results({ firebase }) {
   const [results, setResults] = React.useState(null);
-  const theme = useTheme();
 
   React.useEffect(() => {
     async function getResults() {
@@ -83,9 +80,6 @@ function Results({ firebase }) {
     </TableContainer>
   );
 }
-const getCountry = (teamName) => {
-  return (teamName || '').replace(' ', '_');
-};
 export default Results;
 
 // Sort on points then by 2points
@@ -144,8 +138,7 @@ function Row({ row, i }) {
 
     row.matches.sort((a, b) => b.kickoff - a.kickoff);
     console.log(row.matches);
-  }else{
-    
+  } else {
   }
   return (
     <>
@@ -171,7 +164,7 @@ function Row({ row, i }) {
         >
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
+              <Typography variant="h6" style={{ fontSize: '0.875rem' }} gutterBottom component="div">
                 Historik
               </Typography>
               <Table size="small">
@@ -201,11 +194,10 @@ function Row({ row, i }) {
                         <Typography variant="body2" style={{ fontSize: '8px' }} display="block">
                           {/* {'VS'} */}
                           {'-'}
-                          </Typography>
+                        </Typography>
                         <Typography variant="body2" style={{ fontSize: '8px' }} display="block">
-                        {/* <FlagIcon country={getCountry(historyRow.teams.away)} small /> */}
-                        {getCountryName(historyRow.teams.away)}
-
+                          {/* <FlagIcon country={getCountry(historyRow.teams.away)} small /> */}
+                          {getCountryName(historyRow.teams.away)}
                         </Typography>
                       </TableCell>
                       <TableCell className={`${classes.smallCell} ${classes.kickoff}`}>
@@ -232,7 +224,7 @@ function Row({ row, i }) {
                   ))}
                 </TableBody>
               </Table>
-              <Typography variant="h6" gutterBottom component="div" style={{ marginTop: '10px' }}>
+              <Typography variant="h6" gutterBottom component="div" style={{ marginTop: '10px', fontSize: '0.875rem' }}>
                 Sammanfattning
               </Typography>
               <Table size="small">
