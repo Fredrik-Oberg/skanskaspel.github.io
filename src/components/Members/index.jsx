@@ -8,6 +8,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  List,
   Paper,
   Collapse,
   Box,
@@ -44,110 +48,39 @@ const useStyles = makeStyles({
   },
 });
 
-function Results({ firebase }) {
-  const [results, setResults] = React.useState(null);
+function Members({ firebase }) {
   const [users, setUsers] = React.useState(null);
 
   React.useEffect(() => {
-    async function getResults() {
-      const get = firebase.functions.httpsCallable('resultsFile');
-      const res = await get();
-      console.log(res);
-      sortOnResThen2p(res);
-      setGoldSilver(res);
-      setResults(res.data);
-    }
     async function getUsers() {
       const get = firebase.functions.httpsCallable('listUsers');
       const res = await get();
       setUsers(res.data);
     }
-    getResults();
     getUsers();
   }, [firebase.functions]);
 
-  const classes = useStyles();
-  return !results || !users ? (
+  return !users ? (
     <Loader />
   ) : (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell colSpan={1}>#</TableCell>
-            <TableCell colSpan={5}>Namn</TableCell>
-            <TableCell align="center">2p</TableCell>
-            <TableCell align="center">Totalt</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {results.map((row, i) => {
-            console.log(row.name);
-            if (typeof row.name === 'string') {
-              const { displayName, photoURL } = users.find((x) => x.uid === row.uid);
-              row.name = (
-                <CardHeader
-                  avatar={<UserAvatar size="small" displayName={displayName} url={photoURL} />}
-                  title={row.name}
-                />
-              );
-            }
-            return <Row row={row} i={i} key={row.name} />;
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      {users.map((row, i) => {
+        const { displayName, photoURL } = row;
+        return (
+          <>
+            <ListItem key={displayName}>
+              <ListItemAvatar>
+                <UserAvatar size="large" displayName={displayName} url={photoURL} />
+              </ListItemAvatar>
+              <ListItemText sx={{ marginLeft: '2rem' }} primary={displayName} />
+            </ListItem>
+          </>
+        );
+      })}
+    </List>
   );
 }
-export default Results;
-
-// Sort on points then by 2points
-function sortOnResThen2p(res) {
-  res.data.sort((a, b) => {
-    if (a.totalPoints > b.totalPoints) {
-      return -1;
-    } else if (a.totalPoints < b.totalPoints) {
-      return 1;
-    }
-
-    // Else go to the 2nd item
-    if (a.fullPoints > b.fullPoints) {
-      return -1;
-    } else if (a.fullPoints > b.fullPoints) {
-      return 1;
-    } else {
-      // nothing to split them
-      return 0;
-    }
-  });
-}
-
-function setGoldSilver(res) {
-  for (let i = 0; i < res.data.length; i++) {
-    const previous = i >= 0 ? res.data[i - 1] : null;
-    const person = res.data[i];
-    // Since we have sorted already then first is most points.
-    if (previous == null) {
-      person.gold = true;
-    } else if (
-      previous.gold &&
-      person.totalPoints === previous.totalPoints &&
-      person.fullPoints === previous.fullPoints
-    ) {
-      person.gold = true;
-    }
-    // We know that previous was gold and this has not same points
-    else if (previous.gold) {
-      person.silver = true;
-    } else if (
-      previous.silver &&
-      person.totalPoints === previous.totalPoints &&
-      person.fullPoints === previous.fullPoints
-    ) {
-      person.silver = true;
-    }
-  }
-}
+export default Members;
 
 function Row({ row, i }) {
   const [open, setOpen] = React.useState(false);

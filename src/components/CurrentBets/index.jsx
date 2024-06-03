@@ -47,7 +47,7 @@ function CurrentBets({ firebase }) {
             </Typography>
           )}
           <Box mt={'25px'} mb={'15px'} textAlign="center">
-            {pastBets.length == 0 ? (
+            {pastBets.length === 0 ? (
               <Button variant="contained" color="secondary" onClick={fetchPastBets} disabled={loadingPast}>
                 {'Ladda färdigspelade matcher'}
               </Button>

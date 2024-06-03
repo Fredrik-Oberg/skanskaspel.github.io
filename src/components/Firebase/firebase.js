@@ -3,6 +3,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/functions';
 import 'firebase/compat/firestore';
 import 'firebase/compat/performance';
+import 'firebase/compat/storage';
 import 'firebase/compat/remote-config';
 
 const config = {
@@ -22,6 +23,7 @@ class Firebase {
     this.perf = app.performance();
     this.auth = app.auth();
     this.firestore = app.firestore();
+    this.storage = app.app().storage();
     this.functions = app.app().functions('europe-west3');
 
     // this.storage = app.app().storage();

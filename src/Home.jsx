@@ -8,7 +8,7 @@ import Result from './components/Result';
 import Admin from './components/Admin';
 import Rules from './components/Rules';
 import TestArea from './components/Test-area';
-import Thrashtalk from './components/Thrashtalk';
+import Members from './components/Members';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -89,7 +89,8 @@ function Home({ firebase }) {
           <Tab label="Tippa" {...a11yProps(0)} />
           <Tab label="Matcher" {...a11yProps(1)} />
           <Tab label="Tabell" {...a11yProps(2)} />
-          <Tab label="Regler" {...a11yProps(4)} />
+          <Tab label="Regler" {...a11yProps(3)} />
+          <Tab label="Medlemmar" {...a11yProps(4)} />
           <Tab label="Mina inställningar" {...a11yProps(5)} />
           {isAdmin && <Tab label="Admin" {...a11yProps(6)} />}
           {isAdmin && <Tab label="Test-Area" {...a11yProps(7)} />}
@@ -111,11 +112,6 @@ function Home({ firebase }) {
           <Result firebase={firebase} />
         </Grid>
       </TabPanel>
-      {/* <TabPanel value={value} index={3}>
-        <Grid container direction="column" justify="center" alignItems="center">
-          <Thrashtalk firebase={firebase} />
-        </Grid>
-      </TabPanel> */}
       <TabPanel value={value} index={3}>
         <Grid container direction="column" justify="center" alignItems="center">
           <Rules />
@@ -123,16 +119,21 @@ function Home({ firebase }) {
       </TabPanel>
       <TabPanel value={value} index={4}>
         <Grid container direction="column" justify="center" alignItems="center">
+          <Members firebase={firebase} />
+        </Grid>
+      </TabPanel>
+      <TabPanel value={value} index={5}>
+        <Grid container direction="column" justify="center" alignItems="center">
           <UserProfile firebase={firebase} />
         </Grid>
       </TabPanel>
       {isAdmin && (
-        <TabPanel value={value} index={5}>
+        <TabPanel value={value} index={6}>
           <Admin firebase={firebase} />
         </TabPanel>
       )}
       {isAdmin && (
-        <TabPanel value={value} index={6}>
+        <TabPanel value={value} index={7}>
           <Grid container direction="column" justify="center" alignItems="center">
             <TestArea firebase={firebase} />
           </Grid>
