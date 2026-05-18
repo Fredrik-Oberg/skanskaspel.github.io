@@ -48,11 +48,11 @@ class Firebase {
     //   ui.start(elementId, this.uiConfig);
     // };
 
-    if (process.env.NODE_ENV === 'development') {
-      // this.firestore.useEmulator('http://127.0.0.1', 8080);
-      // this.auth.useEmulator('http://127.0.0.1:9099');
-      // this.functions.useEmulator('127.0.0.1', 5001);
-    }
+    // if (process.env.NODE_ENV === 'development') {
+      this.firestore.useEmulator('http://127.0.0.1', 8080);
+      this.auth.useEmulator('http://127.0.0.1:9099');
+      this.functions.useEmulator('127.0.0.1', 5001);
+    // }
   }
 }
 

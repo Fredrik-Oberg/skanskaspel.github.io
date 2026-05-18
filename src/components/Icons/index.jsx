@@ -27,9 +27,9 @@ import Ukraine from './icons/Ukraine.png';
 import Wales from './icons/Wales.png';
 import Georgia from './icons/Georgia.png';
 import Serbia from './icons/Serbia.png';
-import Romania from './icons/Romania.png'
-import Albania from './icons/Albania.png'
-import Slovenia from './icons/Slovenia.png'
+import Romania from './icons/Romania.png';
+import Albania from './icons/Albania.png';
+import Slovenia from './icons/Slovenia.png';
 
 const countryFlags = {
   Austria,
@@ -60,12 +60,15 @@ const countryFlags = {
   Serbia,
   Romania,
   Albania,
-  Slovenia
+  Slovenia,
 };
 const FlagIcon = ({ country, small }) => {
+  if (country === 'Türkiye') {
+    country = 'Turkey';
+  }
   const Country = countryFlags[country];
   const showBorder = ['Russia', 'Poland', 'Czech_Republic'].includes(country);
-  let height = small ? '10px' : '25px'
+  let height = small ? '10px' : '25px';
   // if(country === 'Georgia'){
   //   height = small ? '17px' : '40px'
   // }
